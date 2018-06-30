@@ -1,17 +1,6 @@
 //
 // This is a simple port of the virtual machine interpreter to golang.
 //
-// For example the loop script could be compiled to bytecode like this:
-//
-//     ./compiler examples/loop.in
-//
-// Once that has been done it can be executed:
-//
-//     go run main.go examples/loop.raw
-//
-// Steve
-// --
-//
 
 package cpu
 

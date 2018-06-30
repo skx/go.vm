@@ -10,6 +10,11 @@ machine.  It is a port of the existing project:
 (The original project has a perl based compiler/decompiler and an interpreter
 written in C.)
 
+You can get a feel for what it looks like by refering to either the parent
+project, or [the examples](examples/) contained in this repository.
+
+This particular virtual machine is intentionally simple, but despite that it is hopefully implemented in a readable fashion.  ("Simplicity" here means that we support only a small number of instructions, and the 16-registers the virtual CPU possesses can store strings and integers, but not floating-point values.)
+
 
 # Installation
 
