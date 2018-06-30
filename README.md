@@ -15,8 +15,8 @@ written in C.)
 
 Install the code via:
 
-    $ go get -u github.com/skx/go.vm
-    $ go installgithub.com/skx/go.vm
+    $ go get -u  github.com/skx/go.vm
+    $ go install github.com/skx/go.vm
 
 Once installed there are three sub-commands of interest:
 
