@@ -56,6 +56,17 @@ The compiler is built in a traditional fashion:
 * The stream of tokens is iterated over by [compiler.go](compiler/compiler.go)
   * This uses the constants in [opcodes.go](opcodes/opcodes.go) for the bytecode generation
 
+You can use the `dump` command to see the structure the lexer generates:
+
+     $ go.vm dump ./examples/hello.in {STORE store}
+     {IDENT #1}
+     {, ,}
+     {STRING Hello, World!
+     }
+     {PRINT_STR print_str}
+     {IDENT #1}
+     {EXIT exit}
+
 
 ## interpreter
 

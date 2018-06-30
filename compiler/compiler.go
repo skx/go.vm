@@ -69,6 +69,17 @@ func (p *Compiler) getRegister(input string) byte {
 	}
 }
 
+// Dump processe the stream of tokens from the lexer and shows the structure
+// of the program.
+func (p *Compiler) Dump() {
+
+	// Until we get the end of our stream we'll show each token.
+	for p.curToken.Type != token.EOF {
+		fmt.Printf("%v\n", p.curToken)
+		p.nextToken()
+	}
+}
+
 // Compile processe the stream of tokens from the lexer and builds
 // up the bytecode program.
 func (p *Compiler) Compile() {

@@ -16,6 +16,7 @@ func main() {
 	subcommands.Register(subcommands.FlagsCommand(), "")
 	subcommands.Register(subcommands.CommandsCommand(), "")
 	subcommands.Register(&compileCmd{}, "")
+	subcommands.Register(&dumpCmd{}, "")
 	subcommands.Register(&executeCmd{}, "")
 	subcommands.Register(&runCmd{}, "")
 
