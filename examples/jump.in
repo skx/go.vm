@@ -1,0 +1,38 @@
+#
+# About
+#
+#  This program only outputs some static strings and an integer
+#
+#  However it does prove that the goto/label handling is correct.
+#
+#
+# Usage
+#
+#  $ compiler ./jump.in ; ./simple-vm ./jump.raw
+#
+#
+#
+
+        store #1, "Steve Kemp\n"
+        print_str #1
+        goto number
+
+        # padding here - just for amusement.
+        nop
+        exit
+
+:kirsi
+        store #1, "Kirsi Kemp\n"
+        print_str #1
+        exit
+
+:number
+        store #1, 32
+        print_int #1
+
+        # add newline to the output
+        store #1, "\n"
+        print_str #1
+
+        goto kirsi
+

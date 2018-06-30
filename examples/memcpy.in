@@ -1,0 +1,51 @@
+#
+# About
+#
+#  This program copies a bunch of memory about, then jumps to it.
+#
+#
+# Usage
+#
+#  $ compiler ./memcpy.in ; ./simple-vm ./memcpy.raw
+#
+#
+#
+
+        goto run
+    :code
+
+        #
+        #  This is the code we're going to copy and execute.
+        #
+        store #1, "Steve Kemp\n"
+        print_str #1
+        store #1, "memcpy works\n"
+        print_str #1
+        exit
+    :code_end
+
+    :run
+        #
+        # Copy the memory between `code` and `code_end` to 0x5000.
+        #
+
+        # First of all calcuate the length
+        store #2, code
+        store #3, code_end
+        sub #3, #3, #2
+
+        # Show the length of the code we're copying
+        # Remember the result is in #3.
+        store #1, "Code length is "
+        print_str #1
+        print_int #3
+        store #1, "\n"
+        print_str #1
+
+        # setup the copy and run it
+        store #1, 0x5000
+        store #2, code
+        memcpy #1, #2, #3
+
+        # Jump to the copied code.
+        goto 0x5000

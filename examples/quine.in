@@ -1,0 +1,75 @@
+#
+# About
+#
+#  Show the binary opcodes of this program!
+#
+#
+# Usage
+#
+#  $ compiler ./quine.in ; ./simple-vm ./quine.raw
+#
+#
+#
+
+        #
+        #  The number of bytes to show is the same as the length
+        # of this (compiled) script.
+        #
+        #  If we store the offset of the "end" label, in register 1,
+        # that will correspond to our length.
+        #
+        store #1, end
+
+        #
+        #  We'll loop with offset 1.
+        #
+        #  i.e. register 1 is the store of iterates.
+        #
+        #       and each loop we set: reg1 = reg1 - reg2
+        #
+        #
+        store #2, 1
+
+        #
+        #  Address to show
+        #
+        store #3, 0
+
+:repeat
+        #
+        #  Get the contents of the byte and show it
+        #
+        peek #5, #3
+        print_int #5
+
+        #
+        #  Increase to show the next address.
+        #
+        inc #3
+
+        #
+        #  Show some spacing.
+        #
+        store #5, " "
+        print_str #5
+
+        #
+        #  Loop until we're done.
+        #
+        sub #1, #1, #2
+        jmpnz repeat
+
+        #
+        #  Terminate with a newline.
+        #
+        store #1, "\n"
+        print_str #1
+        exit
+
+        #
+        #  DATA - just for fun.
+        #
+        DB 0x01, 0x0F, 0x02, 0xF0
+        DATA 255, 255
+
+:end

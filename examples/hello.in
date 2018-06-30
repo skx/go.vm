@@ -1,0 +1,4 @@
+
+        store #1, "Hello, World!\n"
+        print_str #1
+    exit
