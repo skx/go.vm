@@ -63,7 +63,8 @@ labels,  we go back up and fix the generated addresses.
 
 You can use the `dump` command to see the structure the lexer generates:
 
-     $ go.vm dump ./examples/hello.in {STORE store}
+     $ go.vm dump ./examples/hello.in
+     {STORE store}
      {IDENT #1}
      {, ,}
      {STRING Hello, World!
