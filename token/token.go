@@ -21,11 +21,14 @@ const (
 
 	// math
 	ADD = "ADD"
-	SUB = "SUB"
-	MUL = "MUL"
+	AND = "AND"
+	DEC = "DEC"
 	DIV = "DIV"
 	INC = "INC"
-	DEC = "DEC"
+	MUL = "MUL"
+	OR  = "OR"
+	SUB = "SUB"
+	XOR = "XOR"
 
 	// control-flow
 	CALL  = "CALL"
@@ -91,11 +94,14 @@ var keywords = map[string]TokenType{
 
 	// math
 	"add": ADD,
-	"sub": SUB,
-	"mul": MUL,
+	"and": AND,
+	"dec": DEC,
 	"div": DIV,
 	"inc": INC,
-	"dec": DEC,
+	"mul": MUL,
+	"or":  OR,
+	"sub": SUB,
+	"xor": XOR,
 
 	// control-flow
 	"call":  CALL,

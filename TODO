@@ -1,4 +1,4 @@
-* [ ] Implement math operations: mod, pow, and, or
+* [x] Implement math operations: `and`, `or`, `xor`
 * [x] Implement string concat.
 * [x] Implement system.
 * [x] Implement peek/poke.

@@ -199,6 +199,9 @@ func (p *Compiler) Compile() {
 		case token.ADD:
 			p.mathOperation(opcode.ADD_OP)
 
+		case token.XOR:
+			p.mathOperation(opcode.XOR_OP)
+
 		case token.SUB:
 			p.mathOperation(opcode.SUB_OP)
 
@@ -207,6 +210,12 @@ func (p *Compiler) Compile() {
 
 		case token.DIV:
 			p.mathOperation(opcode.DIV_OP)
+
+		case token.AND:
+			p.mathOperation(opcode.AND_OP)
+
+		case token.OR:
+			p.mathOperation(opcode.OR_OP)
 
 		default:
 			fmt.Println("Unhandled token: ", p.curToken)

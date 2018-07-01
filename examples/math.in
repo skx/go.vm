@@ -1,0 +1,39 @@
+
+        store #1, "255 & 16 is : "
+        print_str #1
+
+        store #1, 255
+        store #2, 16
+        and  #0, #1, #2
+        print_int #0
+        store #1, "\n"
+        print_str #1
+
+        cmp #0, 16
+        jmpz and_ok
+
+        store #1, "Result is WRONG!\n"
+        print_str #1
+        exit
+
+:and_ok
+
+        store #1, "32 XOR 23 is : "
+        print_str #1
+
+        # 32 XOR 23 => 55
+        store #1, 32
+        store #2, 23
+        xor  #0, #1, #2
+        print_int #0
+        store #1, "\n"
+        print_str #1
+
+        cmp #0, 55
+        jmpz xor_ok
+
+        store #1, "Result is WRONG!\n"
+        print_str #1
+        exit
+
+:xor_ok
