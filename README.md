@@ -45,6 +45,48 @@ Or you can handle both steps at once:
      $ go.vm run examples/hello.in
 
 
+# Opcodes
+
+The virtual machine has 16 registers, each of which can store an integer
+or a string.  For example to set the first two registers you might write:
+
+     store #0, "This is a string"
+     store #1, 0xFFFF
+
+In addition to this there are several mathematical operations which have
+the general form:
+
+     operations $result, $src1, $src2
+
+For example to add the contents of register #1 and register #2, storing
+the result in register 0 you would write:
+
+     add #0, #1, #2
+
+Strings and integers may be displayed to STDOUT via:
+
+     print_str #1
+     print_int #3
+
+Control-flow is supported via `call`, `ret` (for subroutines) and `jmp`
+for absolute jumps.  You can also use the `Z` register for comparisons and
+make conditional jumps:
+
+        store #1, 0x42
+        cmp #1, 0x42
+        jmpz ok
+
+        store #1, "Something weird happened!\n"
+        print_str #1
+        exit
+      :ok
+        store #1, "Comparing register #01 to 0x42 succeeded!\n"
+        print_str #1
+        exit
+
+Further instructions are available and can be viewed beneath [examples/](examples/).  The biggest omissions are probably reading from STDIN, printing a single (ascii) character.
+
+
 # Notes
 
 ## compiler
