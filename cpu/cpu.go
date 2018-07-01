@@ -721,7 +721,14 @@ func (c *CPU) Run() {
 			c.ip += 1
 
 			addr := c.read2Val()
-			fmt.Printf("Calling trap %04X\n", addr)
+
+			fn := TRAPS[addr]
+			if fn != nil {
+				fn(c)
+			} else {
+				fmt.Printf("Trap function not defined: 0x%04X\n", addr)
+
+			}
 		default:
 			fmt.Printf("Unrecognized/Unimplemented opcode %02X at IP %04X\n", instruction, c.ip)
 			os.Exit(1)
