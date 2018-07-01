@@ -1,0 +1,19 @@
+language: go
+sudo: false
+matrix:
+  include:
+  - go: tip
+  allow_failures:
+  - go: tip
+script:
+- "./.travis/build-all"
+deploy:
+  provider: releases
+  api_key:
+    secure: p15CLexP9TW84MruNT+KmoA9hIsDPjo992NI77WFUf1iGriM4spjpYml8MNGlOzaxQag8niUeay1E+l7c+irX/aABakPn88Ibm+1DhuGOkYwU8yTyOFN3SWfpbDxHpB4LSNz07BmiGxSKGQdOr4VWSfnUBl9Xbwvty1HWl3H0EomHgt1p4R+1EBtR/hoI3zbC38z2y0XzmpvMRzn1CvbcuXKoHXFdhI3Ny+6uXjKRMiMvx+Wbfo8p3bI4fAMATWy9CONZ/5qO3BR2RMVpEoiKTZXxifSDPPfVnATgMLWuRJ2XrDb+4VkxepA09Y2pfMYzVhuwrHUNbgyA6D9tbE5vxphSbhUrbRVQfPBWjq6WBONxnUe5k6i5zgC+1tm6Id6EK5K03aNejmi3h1WfDYPUs7Ar51l9BBsXGiMy/mIl0UuhWQA7AMHNTKM7xlb1fcOXmEwFiTJjvzEKmi4ADEAlpan54RKHetbZrE1sGxoaXBukMaUrOELdcODxKtrzRMG47zTY0n55b3Qy/rhXzbJeZs45G2zHsXAI1zExcceu13XQcRFaKkQfExe8JFQbrPdWiNGX/y+bYI48qmT+38hYResWA+5UnOm+rk71A+XC4X5NgtXMjpLAkH6w0EReRGUNhwB5mC4X7K+gc3OGJWvY0QA2t5VfZVzIxD/pqDyVSs=
+  file_glob: true
+  file:
+    - "go.vm-*"
+  skip_cleanup: true
+  on:
+    tags: true
