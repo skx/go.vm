@@ -1,3 +1,7 @@
+[![Travis CI](https://img.shields.io/travis/skx/go.vm/master.svg?style=flat-square)](https://travis-ci.org/skx/go.vm)
+[![Go Report Card](https://goreportcard.com/badge/github.com/skx/go.vm)](https://goreportcard.com/report/github.com/skx/go.vm)
+[![license](https://img.shields.io/github/license/skx/go.vm.svg)](https://github.com/skx/go.vm/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/release/skx/go.vm.svg)](https://github.com/skx/go.vm/releases/latest)
 
 go.vm
 -----
