@@ -69,8 +69,8 @@ Strings and integers may be displayed to STDOUT via:
      print_int #3
 
 Control-flow is supported via `call`, `ret` (for subroutines) and `jmp`
-for absolute jumps.  You can also use the `Z` register for comparisons and
-make conditional jumps:
+for absolute jumps.  You can also use the `Z`-flag which is set by
+comparisons and the `inc`/`dec` instructions and make conditional jumps:
 
         store #1, 0x42
         cmp #1, 0x42
@@ -84,7 +84,8 @@ make conditional jumps:
         print_str #1
         exit
 
-Further instructions are available and can be viewed beneath [examples/](examples/).  The biggest omissions are probably reading from STDIN, printing a single (ascii) character.
+Further instructions are available and can be viewed beneath [examples/](examples/).  The instruction-set is pretty limited, for example there is no notion of
+reading from STDIN - however this _is_ supported via the use of traps, as [documented below](#traps).
 
 
 # Notes
@@ -120,10 +121,17 @@ You can use the `dump` command to see the structure the lexer generates:
 
 ## The interpreter
 
-The intepreter is located in the file [cpu.go](cpu/cpu.go) and is
-as simple and naive as you would expect.
+The core of the intepreter is located in the file [cpu.go](cpu/cpu.go) and is
+as simple and naive as you would expect.  There are some supporting files
+in the same directory:
 
-It could be broken up into multiple files, usefully.
+* [register.go](cpu/register.go)
+  * The implementation of the register-related functions.
+* [stack.go](cpu/stack.go)
+  * The implementation of the stack.
+* [traps.go](cpu/traps.go)
+  * The implementation of the traps, to be [described below](#traps).
+
 
 ## Changes
 
