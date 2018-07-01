@@ -35,8 +35,7 @@ func (p *executeCmd) SetFlags(f *flag.FlagSet) {
 func (p *executeCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
 
 	//
-	// For each file on the command-line we can now parse and
-	// enqueue the jobs
+	// For each file on the command-line we can now execute it.
 	//
 	for _, file := range f.Args() {
 		fmt.Printf("Loading file: %s\n", file)

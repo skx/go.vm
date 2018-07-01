@@ -39,6 +39,7 @@ func (p *runCmd) SetFlags(f *flag.FlagSet) {
 func (p *runCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
 
 	//
+	// For each file on the command-line both compile and execute it.
 	//
 	for _, file := range f.Args() {
 		fmt.Printf("Parsing file: %s\n", file)
@@ -53,7 +54,7 @@ func (p *runCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) s
 		// Lex it
 		l := lexer.New(string(input))
 
-		// Compile it
+		// Compile it.
 		e := compiler.New(l)
 		e.Compile()
 
