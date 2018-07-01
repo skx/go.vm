@@ -1,6 +1,12 @@
 //
 // This is a simple port of the virtual machine interpreter to golang.
 //
+// Ideally this would be broken into files for the structures, and
+// the utility functions.
+//
+// We should probably also use `opcodes/opcodes.go` instead of the literal
+// hex-constants for our bytecode.
+//
 
 package cpu
 
