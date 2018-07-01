@@ -764,6 +764,21 @@ func (p *Compiler) concatOp() {
 // dataOp embeds literal/binary data into the output
 func (p *Compiler) dataOp() {
 	p.nextToken()
+
+	// We might have a string, or a series of ints
+	//
+	// If it is a string handle that first
+	if p.curToken.Type == token.STRING {
+		len := len(p.curToken.Literal)
+		for i := 0; i < len; i++ {
+			p.bytecode = append(p.bytecode, byte(p.curToken.Literal[i]))
+		}
+		return
+	}
+
+	//
+	// Otherwise we expect a single int
+	//
 	db := p.curToken.Literal
 	i, _ := strconv.ParseInt(db, 0, 64)
 	p.bytecode = append(p.bytecode, byte(i))

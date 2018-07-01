@@ -1,0 +1,39 @@
+#
+# This example uses `peek` to read a string character by character
+# and output the length of that string.
+#
+# Unfortunately we can't output the string itself as we have no
+# "print character" option.
+#
+#
+
+        #
+        # #1 -> Address of string
+        #
+        # #0 -> Read each byte here
+        #
+        # #3 -> Length of string
+        #
+
+        store #3, 0x0000
+        store #1, string
+:loop
+        peek #0, #1
+        inc #1
+        inc #3
+        cmp #0, 0x00
+        jmpnz loop
+
+        # length will be one too many - so decrease by one
+        dec #3
+
+        store #1, "The length of the string is "
+        print_str #1
+        print_int #3
+        store #1, " bytes\n"
+        print_str #1
+        exit
+
+:string
+        DB "Steve"
+        DB 0x00
