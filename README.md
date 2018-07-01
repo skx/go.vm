@@ -56,6 +56,11 @@ The compiler is built in a traditional fashion:
 * The stream of tokens is iterated over by [compiler.go](compiler/compiler.go)
   * This uses the constants in [opcodes.go](opcodes/opcodes.go) for the bytecode generation
 
+The approach to labels is the same as in the inspiring-project:  Every time
+we come across a label we output a pair of temporary bytes in our bytecode.
+Later, once we've read the whole program and assume we've found all existing
+labels,  we go back up and fix the generated addresses.
+
 You can use the `dump` command to see the structure the lexer generates:
 
      $ go.vm dump ./examples/hello.in {STORE store}
