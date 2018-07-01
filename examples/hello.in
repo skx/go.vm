@@ -1,4 +1,18 @@
+#
+# About
+#
+#  This program prints the traditional greeting.
+#
+# Usage:
+#
+#  $ go.vm run ./hello.in
+#
+# Or compile, then execute:
+#
+#  $ go.vm compile ./hello.in
+#  $ go.vm execute ./hello.raw
+#
 
-        store #1, "Hello, World!\n"
-        print_str #1
+    store #1, "Hello, World!\n"
+    print_str #1
     exit

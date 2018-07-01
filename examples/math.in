@@ -1,3 +1,17 @@
+#
+# About
+#
+#  This program demonstrates the use of bitwise AND and XOR operations.
+#
+# Usage:
+#
+#  $ go.vm run ./math.in
+#
+# Or compile, then execute:
+#
+#  $ go.vm compile ./math.in
+#  $ go.vm execute ./math.raw
+#
 
         store #1, "255 & 16 is : "
         print_str #1

@@ -3,12 +3,14 @@
 #
 #  This program demonstrates that the stack can be used to store integers.
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./stack.in
 #
-#  $ compiler ./stack.in ; ./simple-vm ./stack.raw
+# Or compile, then execute:
 #
-#
+#  $ go.vm compile ./stack.in
+#  $ go.vm execute ./stack.raw
 #
 
         #

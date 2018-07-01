@@ -1,14 +1,16 @@
 #
 # About
 #
-#  Show some opcodes in RAM, then execute them.
+#  POKE some opcodes in RAM, then execute them.
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./poke.in
 #
-#  $ compiler ./poke.in ; ./simple-vm ./poke.raw
+# Or compile, then execute:
 #
-#
+#  $ go.vm compile ./poke.in
+#  $ go.vm execute ./poke.raw
 #
 
         #

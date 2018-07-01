@@ -1,3 +1,19 @@
+#
+# About:
+#
+# This program demonstrates the use of `int 0x01` to read a string from
+# STDIN, via a trap to the CPU.
+#
+# Usage:
+#
+#  $ go.vm run ./trap.stdin.in
+#
+# Or compile, then execute:
+#
+#  $ go.vm compile ./trap.stdin.in
+#  $ go.vm execute ./trap.stdin.raw
+#
+
         store #1, "Enter a string:"
         print_str #1
 

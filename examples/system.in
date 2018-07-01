@@ -3,12 +3,14 @@
 #
 #  This program just executes /bin/ls.
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./system.in
 #
-#  $ compiler ./system.in ; ./simple-vm ./system.raw
+# Or compile, then execute:
 #
-#
+#  $ go.vm compile ./system.in
+#  $ go.vm execute ./system.raw
 #
 
         store #1, "/bin/ls"

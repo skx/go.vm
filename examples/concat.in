@@ -3,12 +3,14 @@
 #
 #  Use a conditional jump to loop ten times, building up a string as we go.
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./concat.in
 #
-#  $ compiler ./concat.in ; ./simple-vm ./concat.raw
+# Or compile, then execute:
 #
-#
+#  $ go.vm compile ./concat.in
+#  $ go.vm execute ./concat.raw
 #
 
         store #1, "Counting bananas"

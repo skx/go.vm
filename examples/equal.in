@@ -3,12 +3,14 @@
 #
 #  This program tests our comparision operation.
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./equal.in
 #
-#  $ compiler ./equal.in ; ./simple-vm ./equal.raw
+# Or compile, then execute:
 #
-#
+#  $ go.vm compile ./equal.in
+#  $ go.vm execute ./equal.raw
 #
 
         store #1, 20

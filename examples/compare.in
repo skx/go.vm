@@ -3,12 +3,14 @@
 #
 #  This program compares the number in a register with a constant.
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./compare.in
 #
-#  $ compiler ./compare.in ; ./simple-vm ./compare.raw
+# Or compile, then execute:
 #
-#
+#  $ go.vm compile ./compare.in
+#  $ go.vm execute ./compare.raw
 #
 
         store #1, 44

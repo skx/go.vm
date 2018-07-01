@@ -3,12 +3,14 @@
 #
 #  This program copies a bunch of memory about, then jumps to it.
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./memcpy.in
 #
-#  $ compiler ./memcpy.in ; ./simple-vm ./memcpy.raw
+# Or compile, then execute:
 #
-#
+#  $ go.vm compile ./memcpy.in
+#  $ go.vm execute ./memcpy.raw
 #
 
         goto run

@@ -3,12 +3,14 @@
 #
 #  Show the binary opcodes of this program!
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./quine.in
 #
-#  $ compiler ./quine.in ; ./simple-vm ./quine.raw
+# Or compile, then execute:
 #
-#
+#  $ go.vm compile ./quine.in
+#  $ go.vm execute ./quine.raw
 #
 
         #

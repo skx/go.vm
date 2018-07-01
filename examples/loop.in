@@ -4,12 +4,14 @@
 #  Use a conditional jump to loop ten times, the conditional will trigger
 # if a "SUB" operation results in <0.
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./loop.in
 #
-#  $ compiler ./loop.in ; ./simple-vm ./loop.raw
+# Or compile, then execute:
 #
-#
+#  $ go.vm compile ./loop.in
+#  $ go.vm execute ./loop.raw
 #
 
         store #1, "Counting from ten to zero\n"

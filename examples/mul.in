@@ -3,12 +3,14 @@
 #
 #  This program multiples and divides two numbers.
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./mul.in
 #
-#  $ compiler ./mul.in ; ./simple-vm ./mul.raw
+# Or compile, then execute:
 #
-#
+#  $ go.vm compile ./mul.in
+#  $ go.vm execute ./mul.raw
 #
 
         store #1, 10

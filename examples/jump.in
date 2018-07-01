@@ -5,12 +5,14 @@
 #
 #  However it does prove that the goto/label handling is correct.
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./jump.in
 #
-#  $ compiler ./jump.in ; ./simple-vm ./jump.raw
+# Or compile, then execute:
 #
-#
+#  $ go.vm compile ./jump.in
+#  $ go.vm execute ./jump.raw
 #
 
         store #1, "Steve Kemp\n"
@@ -35,4 +37,3 @@
         print_str #1
 
         goto kirsi
-

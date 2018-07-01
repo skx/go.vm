@@ -3,13 +3,16 @@
 #
 #  This program demonstrates that we can use subroutines.
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./call.in
 #
-#  $ compiler ./call.in ; ./simple-vm ./call.raw
+# Or compile, then execute:
 #
+#  $ go.vm compile ./call.in
+#  $ go.vm execute ./call.raw
 #
-#
+
         store #1, 15
         call print
 

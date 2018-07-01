@@ -3,12 +3,14 @@
 #
 #  This program decrements an integer.
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./dec.in
 #
-#  $ compiler ./dec.in ; ./simple-vm ./dec.raw
+# Or compile, then execute:
 #
-#
+#  $ go.vm compile ./dec.in
+#  $ go.vm execute ./dec.raw
 #
 
         store #1, 3

@@ -3,12 +3,14 @@
 #
 #  This program adds two numbers.
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./add.in
 #
-#  $ compiler ./add.in ; ./simple-vm ./add.raw
+# Or compile, then execute:
 #
-#
+#  $ go.vm compile ./add.in
+#  $ go.vm execute ./add.raw
 #
 
         store #1, 10

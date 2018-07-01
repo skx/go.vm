@@ -3,12 +3,14 @@
 #
 #  This program tests our type-handling - which is basic.
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./types.in
 #
-#  $ compiler ./types.in ; ./simple-vm ./types.raw
+# Or compile, then execute:
 #
-#
+#  $ go.vm compile ./types.in
+#  $ go.vm execute ./types.raw
 #
 
         store #1, 43

@@ -3,12 +3,14 @@
 #
 #  Output ten random integers.
 #
+# Usage:
 #
-# Usage
+#  $ go.vm run ./random.in
 #
-#  $ compiler ./random.in ; ./simple-vm ./random.raw
+# Or compile, then execute:
 #
-#
+#  $ go.vm compile ./random.in
+#  $ go.vm execute ./random.raw
 #
 
         store #1, "Generating ten random integers\n"
