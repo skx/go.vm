@@ -716,6 +716,12 @@ func (c *CPU) Run() {
 			// jump to the call address
 			c.ip = addr
 
+		case 0x80:
+			debugPrintf("TRAP\n")
+			c.ip += 1
+
+			addr := c.read2Val()
+			fmt.Printf("Calling trap %04X\n", addr)
 		default:
 			fmt.Printf("Unrecognized/Unimplemented opcode %02X at IP %04X\n", instruction, c.ip)
 			os.Exit(1)

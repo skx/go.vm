@@ -71,6 +71,7 @@ const (
 	NOP    = "NOP"
 	RANDOM = "RANDOM"
 	SYSTEM = "SYSTEM"
+	TRAP   = "TRAP"
 )
 
 // reversed keywords
@@ -124,6 +125,7 @@ var keywords = map[string]TokenType{
 	"concat": CONCAT,
 	"DATA":   DATA,
 	"DB":     DB,
+	"int":    TRAP,
 	"memcpy": MEMCPY,
 	"nop":    NOP,
 	"random": RANDOM,

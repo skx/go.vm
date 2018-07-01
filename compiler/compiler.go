@@ -160,6 +160,9 @@ func (p *Compiler) Compile() {
 		case token.GOTO:
 			p.jumpOp(opcode.JUMP_TO)
 
+		case token.TRAP:
+			p.trapOp()
+
 		case token.JMP:
 			p.jumpOp(opcode.JUMP_TO)
 
@@ -462,7 +465,8 @@ func (p *Compiler) callOp() {
 	switch p.curToken.Type {
 
 	case token.INT:
-		addr, _ := strconv.Atoi(p.curToken.Literal)
+		addr, _ := strconv.ParseInt(p.curToken.Literal, 0, 64)
+
 		len1 := addr % 256
 		len2 := (addr - len1) / 256
 
@@ -481,6 +485,28 @@ func (p *Compiler) callOp() {
 
 }
 
+// trapOp inserts an interrupt call / trap
+func (p *Compiler) trapOp() {
+
+	// advance to the target
+	p.nextToken()
+
+	// The jump might be an absolute target, or a label.
+	switch p.curToken.Type {
+
+	case token.INT:
+		addr, _ := strconv.ParseInt(p.curToken.Literal, 0, 64)
+		len1 := addr % 256
+		len2 := (addr - len1) / 256
+
+		p.bytecode = append(p.bytecode, byte(opcode.TRAP_OP))
+		p.bytecode = append(p.bytecode, byte(len1))
+		p.bytecode = append(p.bytecode, byte(len2))
+	default:
+		fmt.Printf("Fail!")
+	}
+}
+
 // jumpOp inserts a direct jump
 func (p *Compiler) jumpOp(operator int) {
 
@@ -494,7 +520,7 @@ func (p *Compiler) jumpOp(operator int) {
 	switch p.curToken.Type {
 
 	case token.INT:
-		addr, _ := strconv.Atoi(p.curToken.Literal)
+		addr, _ := strconv.ParseInt(p.curToken.Literal, 0, 64)
 		len1 := addr % 256
 		len2 := (addr - len1) / 256
 
@@ -626,8 +652,7 @@ func (p *Compiler) storeOp() {
 		p.bytecode = append(p.bytecode, reg)
 
 		// Convert to low/high
-		i, _ := strconv.Atoi(p.curToken.Literal)
-
+		i, _ := strconv.ParseInt(p.curToken.Literal, 0, 64)
 		len1 := i % 256
 		len2 := (i - len1) / 256
 		p.bytecode = append(p.bytecode, byte(len1))
@@ -702,7 +727,7 @@ func (p *Compiler) cmpOp() {
 		p.bytecode = append(p.bytecode, reg)
 
 		// Convert to low/high
-		i, _ := strconv.Atoi(p.curToken.Literal)
+		i, _ := strconv.ParseInt(p.curToken.Literal, 0, 64)
 
 		len1 := i % 256
 		len2 := (i - len1) / 256

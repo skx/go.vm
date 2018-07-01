@@ -60,4 +60,7 @@ var (
 	STACK_POP  = 0x71
 	STACK_RET  = 0x72
 	STACK_CALL = 0x73
+
+	// Interrupt / trap
+	TRAP_OP = 0x80
 )
