@@ -463,7 +463,21 @@ func (c *CPU) Run() {
 			c.ip += 1
 			reg := c.mem[c.ip]
 
-			c.regs[reg].SetInt(c.regs[reg].GetInt() + 1)
+			// get the value
+			val := c.regs[reg].GetInt()
+
+			// if the value is the max it will wrap around
+			if val == 0xFFFF {
+				val = 0
+			} else {
+				// otherwise be incremented normally
+				val += 1
+			}
+
+			// zero?
+			c.flags.z = (val == 0)
+
+			c.regs[reg].SetInt(val)
 
 			// bump past that
 			c.ip += 1
@@ -475,7 +489,22 @@ func (c *CPU) Run() {
 			c.ip += 1
 			reg := c.mem[c.ip]
 
-			c.regs[reg].SetInt(c.regs[reg].GetInt() - 1)
+			// get the value
+			val := c.regs[reg].GetInt()
+
+			// if the value is the minimum it will wrap around
+			if val == 0x0000 {
+				val = 0xFFFF
+			} else {
+				// otherwise decrease normally
+				val -= 1
+			}
+
+			// zero?
+			c.flags.z = (val == 0)
+
+			c.regs[reg].SetInt(val)
+
 			// bump past that
 			c.ip += 1
 
