@@ -1,3 +1,6 @@
+// This file contains the implementation of the registers the
+// CPU contains.
+
 package cpu
 
 import (

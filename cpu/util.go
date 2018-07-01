@@ -1,3 +1,6 @@
+// Some utility functions are bundled here - they're primarily used by
+// the `system` opcode.
+
 package cpu
 
 import (

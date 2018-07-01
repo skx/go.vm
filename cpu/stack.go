@@ -1,3 +1,7 @@
+// This file contains the implementation of the stack the CPU uses.
+//
+// Note that the stack is used for storing integers only.
+
 package cpu
 
 import "errors"
