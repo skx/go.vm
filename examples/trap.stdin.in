@@ -1,0 +1,9 @@
+        store #1, "Enter a string:"
+        print_str #1
+
+        # Reads a string from the console - sets the result in register #0
+        int 0x01
+
+        store #1, "\nYou entered:\n"
+        print_str #1
+        print_str #0
