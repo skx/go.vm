@@ -1,0 +1,18 @@
+#
+# About:
+#
+# This program demonstrates the invokation of a trap-function which isn't
+# implemented.
+#
+# Usage:
+#
+#  $ go.vm run ./trap.missing.in
+#
+# Or compile, then execute:
+#
+#  $ go.vm compile ./trap.missing.in
+#  $ go.vm execute ./trap.missing.raw
+#
+
+        # Call the trap
+        int 0xf00f

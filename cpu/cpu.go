@@ -720,14 +720,11 @@ func (c *CPU) Run() {
 			debugPrintf("TRAP\n")
 			c.ip += 1
 
-			addr := c.read2Val()
+			num := c.read2Val()
 
-			fn := TRAPS[addr]
+			fn := TRAPS[num]
 			if fn != nil {
-				fn(c)
-			} else {
-				fmt.Printf("Trap function not defined: 0x%04X\n", addr)
-
+				fn(c, num)
 			}
 		default:
 			fmt.Printf("Unrecognized/Unimplemented opcode %02X at IP %04X\n", instruction, c.ip)
