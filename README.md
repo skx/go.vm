@@ -157,5 +157,7 @@ on behalf of a program.  Only two traps are defined right now:
    * Set the contents of the register `#0` with a string entered by the user.
    * See [examples/trap.stdin.in](examples/trap.stdin.in).
 
+Adding your own trap-functions should be as simple as editing [cpu/traps.go](cpu/traps.go).
+
 Steve
 --
