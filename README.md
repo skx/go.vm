@@ -60,10 +60,10 @@ or a string.  For example to set the first two registers you might write:
 In addition to this there are several mathematical operations which have
 the general form:
 
-     operations $result, $src1, $src2
+     $operation $result, $src1, $src2
 
 For example to add the contents of register #1 and register #2, storing
-the result in register 0 you would write:
+the result in register #0 you would write:
 
      add #0, #1, #2
 
