@@ -17,7 +17,6 @@ import (
 	"math/rand"
 	"os"
 	"os/exec"
-	"regexp"
 	"strconv"
 	"time"
 )
@@ -28,31 +27,10 @@ type Flags struct {
 	z bool
 }
 
-// Register holds the contents of a single register.
-//
-// This is horrid because we don't use an enum for the type.
-type Register struct {
-	// Integer contents of register if t == "int"
-	i int
-
-	// String contents of register if t == "string"
-	s string
-
-	// Register type: "int" vs. "string"
-	t string
-}
-
-// Stack holds return-addresses when the `call` operation is being
-// completed.  It can also be used for storing ints.
-type Stack struct {
-	// The entries on our stack
-	entries []int
-}
-
 // CPU is our virtual machine state.
 type CPU struct {
 	// Registers
-	regs [16]Register
+	regs [16]*Register
 
 	// Flags
 	flags Flags
@@ -65,127 +43,6 @@ type CPU struct {
 
 	// stack
 	stack *Stack
-}
-
-//
-// Global functions
-//
-
-// debugPrintf outputs some debugging details when `$DEBUG=1`.
-func debugPrintf(fmt_ string, args ...interface{}) {
-	if os.Getenv("DEBUG") == "" {
-		return
-	}
-	prefix := fmt.Sprintf("%s", fmt_)
-	fmt.Printf(prefix, args...)
-}
-
-// Split a line of text into tokens, but keep anything "quoted"
-// together.
-//
-// So this input:
-//
-//   /bin/sh -c "ls /etc"
-//
-// Would give output of the form:
-//   /bin/sh
-//   -c
-//   ls /etc
-//
-func splitCommand(input string) []string {
-
-	//
-	// This does the split into an array
-	//
-	r := regexp.MustCompile(`[^\s"']+|"([^"]*)"|'([^']*)`)
-	res := r.FindAllString(input, -1)
-
-	//
-	// However the resulting pieces might be quoted.
-	// So we have to remove them, if present.
-	//
-	var result []string
-	for _, e := range res {
-		result = append(result, trimQuotes(e, '"'))
-	}
-	return (result)
-}
-
-// Remove balanced characters around a string.
-func trimQuotes(in string, c byte) string {
-	if len(in) >= 2 {
-		if in[0] == c && in[len(in)-1] == c {
-			return in[1 : len(in)-1]
-		}
-	}
-	return in
-}
-
-//
-// Register functions
-//
-
-// GetInt retrieves the integer content of the given register.
-// If the register contains a string that is a fatal error.
-func (r *Register) GetInt() int {
-	if r.t != "int" {
-		fmt.Printf("BUG: Attempting to call GetInt on a register holding a non-integer value.\n")
-		os.Exit(3)
-	}
-	return r.i
-}
-
-// SetInt stores the given integer in the register.
-func (r *Register) SetInt(v int) {
-	r.i = v
-	r.t = "int"
-}
-
-// GetInt retrieves the string content of the given register.
-// If the register contains an integer that is a fatal error.
-func (r *Register) GetString() string {
-	if r.t != "string" {
-		fmt.Printf("BUG: Attempting to call GetString on a register holding a non-string value.\n")
-		os.Exit(3)
-	}
-	return r.s
-}
-
-// SetString stores the supplied string in the register.
-func (r *Register) SetString(v string) {
-	r.s = v
-	r.t = "string"
-}
-
-// Return the type of a registers contents `int` vs. `string`.
-func (r *Register) Type() string {
-	return (r.t)
-}
-
-//
-// Stack functions
-//
-
-// NewStack creates a new stack object.
-func NewStack() *Stack {
-	return &Stack{}
-}
-
-// Is the stack empty?
-func (s *Stack) Empty() bool {
-	return (len(s.entries) <= 0)
-}
-
-// Push adds a value to the stack
-func (s *Stack) Push(value int) {
-	s.entries = append(s.entries, value)
-}
-
-// Pop removes a value from the stack
-func (s *Stack) Pop() int {
-	result := s.entries[0]
-	s.entries = append(s.entries[:0], s.entries[1:]...)
-	return (result)
 }
 
 //
@@ -203,18 +60,21 @@ func NewCPU() *CPU {
 // and emptying all registers (i.e. setting them to zero too).
 func (c *CPU) Reset() {
 
+	// Reset registers
 	for i := 0; i < 16; i++ {
-		c.regs[i].SetInt(0)
+		c.regs[i] = NewRegister()
 	}
-	c.ip = 0
+
+	// Reset stack
 	c.stack = NewStack()
+
+	// Reset instruction pointer to zero.
+	c.ip = 0
 }
 
 // LoadFile loads the program from the named file into RAM.
+// NOTE: The CPU-state is reset prior to the load.
 func (c *CPU) LoadFile(path string) {
-
-	// Ensure we reset our state.
-	c.Reset()
 
 	// Load the file
 	b, err := ioutil.ReadFile(path)
@@ -228,13 +88,13 @@ func (c *CPU) LoadFile(path string) {
 		os.Exit(1)
 	}
 
-	// Copy contents of file to our memory region
-	for i := 0; i < len(b); i++ {
-		c.mem[i] = b[i]
-	}
+	// Copy contents of file to our memory region.
+	// NOTE: This calls `Reset` too :)
+	c.LoadBytes(b)
 }
 
 // LoadBytes populates the given program into RAM.
+// NOTE: The CPU-state is reset prior to the load.
 func (c *CPU) LoadBytes(data []byte) {
 
 	// Ensure we reset our state.
@@ -282,6 +142,7 @@ func (c *CPU) read2Val() int {
 }
 
 // Run launches our intepreter.
+// It does not terminate until an `EXIT` instruction is hit.
 func (c *CPU) Run() {
 	run := true
 	for run {
@@ -825,7 +686,8 @@ func (c *CPU) Run() {
 				os.Exit(1)
 			}
 			// Store the value in the register on the stack
-			c.regs[reg].SetInt(c.stack.Pop())
+			val, _ := c.stack.Pop()
+			c.regs[reg].SetInt(val)
 
 		case 0x72:
 			debugPrintf("RET\n")
@@ -837,7 +699,7 @@ func (c *CPU) Run() {
 			}
 
 			// Get the address
-			addr := c.stack.Pop()
+			addr, _ := c.stack.Pop()
 
 			// jump
 			c.ip = addr
@@ -860,7 +722,7 @@ func (c *CPU) Run() {
 		}
 
 		// Ensure our instruction-pointer wraps around.
-		if c.ip >= 0xFFFF {
+		if c.ip > 0xFFFF {
 			c.ip = 0
 		}
 	}
