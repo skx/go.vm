@@ -276,7 +276,7 @@ func (c *CPU) Run() {
 			c.regs[res].SetInt(a_val - b_val)
 
 			// set the zero-flag if the result was zero or less
-			if c.regs[res].i <= 0 {
+			if c.regs[res].GetInt() <= 0 {
 				c.flags.z = true
 			}
 
@@ -607,7 +607,7 @@ func (c *CPU) Run() {
 			src := int(c.mem[c.ip])
 
 			// get the address from the src register contents
-			addr := c.regs[src].i
+			addr := c.regs[src].GetInt()
 
 			// store the contents of the given address
 			c.regs[result].SetInt(int(c.mem[addr]))
@@ -626,8 +626,8 @@ func (c *CPU) Run() {
 
 			// So the destination will contain an address
 			// put the contents of the source to that.
-			addr := c.regs[dst].i
-			val := c.regs[src].i
+			addr := c.regs[dst].GetInt()
+			val := c.regs[src].GetInt()
 
 			debugPrintf("Writing %02X to %04X\n", val, addr)
 			c.mem[addr] = byte(val)
