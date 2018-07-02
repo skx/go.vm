@@ -1,0 +1,77 @@
+#
+# Prompt for a string and then output it, surrounded by a series of
+# stars!
+#
+#
+#
+        store #1, "Please enter your name:"
+        print_str #1
+
+        # Reads a string from the console - sets the result in register #0
+        int 0x01
+
+        # The following trap removes the newline from the string in #0
+        int 0x02
+
+        call box
+        exit
+
+#
+# This function prints out the string in #0 in a box. For example if the input
+# string in #0 is "Steve" the output will be:
+#
+#   *********
+#   * Steve *
+#   *********
+#
+# Registers ruined:
+#    #0
+#    #1
+#    #10
+#
+:box
+        # string is in #0
+        store #10, #0
+        # find the length
+        int 0x00
+
+        # now we want to print the line of stars to box the string
+        inc #0
+        inc #0
+        inc #0
+        inc #0
+
+:header
+        store #1, "*"
+        print_str #1
+        dec #0
+        jmpnz header
+
+        # print "* $str *"
+        store #1, "\n* "
+        print_str #1
+        store #1, #10
+        print_str #1
+        store #1, " *\n"
+        print_str #1
+
+        # now repeat the process to print stars under the string
+        store #0, #10
+        # find the length
+        int 0x00
+
+        # now we want to print the line of stars to box the string
+        inc #0
+        inc #0
+        inc #0
+        inc #0
+
+:footer
+        store #1, "*"
+        print_str #1
+        dec #0
+        jmpnz footer
+
+        store #1, "\n"
+        print_str #1
+        ret
