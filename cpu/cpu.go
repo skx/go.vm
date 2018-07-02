@@ -586,7 +586,15 @@ func (c *CPU) Run() {
 			src := int(c.mem[c.ip])
 			c.ip += 1
 
-			c.regs[src] = c.regs[dst]
+			// Copy the register - paying attention to types
+			if c.regs[src].Type() == "string" {
+				c.regs[dst].SetString(c.regs[src].GetString())
+			} else if c.regs[src].Type() == "int" {
+				c.regs[dst].SetInt(c.regs[src].GetInt())
+			} else {
+				fmt.Printf("Invalid register type?")
+				os.Exit(3)
+			}
 
 		case 0x60:
 			debugPrintf("PEEK\n")
