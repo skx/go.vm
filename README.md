@@ -161,7 +161,7 @@ But this is not:
 #### Traps
 
 The instruction `int` can be used to call back to the emulator to do some work
-on behalf of a program.  Only two traps are defined right now:
+on behalf of a program.  The following traps are currently defined & available:
 
 * `int 0x00`
    * Set the contents of the register `#0` with the length of the string in register `#0`.
