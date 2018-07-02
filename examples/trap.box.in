@@ -1,9 +1,27 @@
 #
+# About:
+#
 # Prompt for a string and then output it, surrounded by a series of
-# stars!
+# stars.  This demonstrates trap 0x1 (read from stdin) and trap
+# 0x02 (strip newline).
 #
+# Usage:
 #
+#  $ go.vm run ./trap.box.in
 #
+# Or compile, then execute:
+#
+#  $ go.vm compile ./trap.box.in
+#  $ go.vm execute ./trap.box.raw
+#
+# Example:
+#
+#  If the user enters "Steve" they will see the following output:
+#
+#   *********
+#   * Steve *
+#   *********
+
         store #1, "Please enter your name:"
         print_str #1
 
@@ -13,8 +31,10 @@
         # The following trap removes the newline from the string in #0
         int 0x02
 
+        # Call a subroutine to output the boxed result
         call box
         exit
+
 
 #
 # This function prints out the string in #0 in a box. For example if the input
