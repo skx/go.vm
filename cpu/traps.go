@@ -10,6 +10,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 //
@@ -60,12 +61,25 @@ func ReadStringTrap(c *CPU, num int) {
 	c.regs[0].SetString(text)
 }
 
+// RemoveNewLineTrap removes any trailing newline from the string in #0
+//
+// Input:
+//   The string operate upon in #0.
+// Output:
+//   Sets register #0 with the updated string
+//
+func RemoveNewLineTrap(c *CPU, num int) {
+	str := c.regs[0].GetString()
+	c.regs[0].SetString(strings.TrimSpace(str))
+}
+
 // Now implement the traps
 //
 func init() {
 	reader = bufio.NewReader(os.Stdin)
 	TRAPS[0] = StrLenTrap
 	TRAPS[1] = ReadStringTrap
+	TRAPS[2] = RemoveNewLineTrap
 
 	// Fill in the rest of the traps with
 	// a function that will just report that
