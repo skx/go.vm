@@ -168,6 +168,9 @@ on behalf of a program.  Only two traps are defined right now:
 * `int 0x01`
    * Set the contents of the register `#0` with a string entered by the user.
    * See [examples/trap.stdin.in](examples/trap.stdin.in).
+* `int 0x02`
+   * Update the (string) contents of register `#0` to remove any trailing newline.
+   * See [examples/trap.box.in](examples/trap.box.in).
 
 Adding your own trap-functions should be as simple as editing [cpu/traps.go](cpu/traps.go).
 
