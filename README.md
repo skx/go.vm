@@ -103,7 +103,7 @@ The compiler is built in a traditional fashion:
 * Input is split into tokens via [lexer.go](lexer/lexer.go)
   * This uses the [token.go](token/token.go) for the definition of constants.
 * The stream of tokens is iterated over by [compiler.go](compiler/compiler.go)
-  * This uses the constants in [opcode.go](opcode/opcode.go) for the bytecode generation
+  * This uses the constants in [opcode.go](opcode/opcode.go) for the bytecode generation.
 
 The approach to labels is the same as in the inspiring-project:  Every time
 we come across a label we output a pair of temporary bytes in our bytecode.
