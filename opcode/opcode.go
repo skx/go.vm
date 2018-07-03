@@ -64,3 +64,105 @@ var (
 	// Interrupt / trap
 	TRAP_OP = 0x80
 )
+
+// Opcode is a holder for a single instruction.
+// Note that this doesn't take any account of the arguments which might
+// be necessary.
+type Opcode struct {
+	instruction byte
+}
+
+// NewOpcode creates a new Opcode.
+func NewOpcode(instruction byte) *Opcode {
+	o := &Opcode{}
+	o.instruction = instruction
+	return o
+}
+
+// String converts the given Opcode to a string, but again note that it
+// doesn't take into account the value.
+func (o *Opcode) String() string {
+	switch int(o.instruction) {
+	case EXIT:
+		return "exit"
+	case INT_STORE:
+		return "INT_STORE"
+	case INT_PRINT:
+		return "INT_PRINT"
+	case INT_TOSTRING:
+		return "INT_TOSTRING"
+	case INT_RANDOM:
+		return "INT_RANDOM"
+	case JUMP_TO:
+		return "JUMP_TO"
+	case JUMP_Z:
+		return "JUMP_Z"
+	case JUMP_NZ:
+		return "JUMP_NZ"
+
+	case XOR_OP:
+		return "XOR_OP"
+	case ADD_OP:
+		return "ADD_OP"
+	case SUB_OP:
+		return "SUB_OP"
+	case MUL_OP:
+		return "MUL_OP"
+	case DIV_OP:
+		return "DIV_OP"
+	case INC_OP:
+		return "INC_OP"
+	case DEC_OP:
+		return "DEC_OP"
+	case AND_OP:
+		return "AND_OP"
+	case OR_OP:
+		return "OR_OP"
+	case STRING_STORE:
+		return "STRING_STORE"
+	case STRING_PRINT:
+		return "STRING_PRINT"
+	case STRING_CONCAT:
+		return "STRING_CONCAT"
+	case STRING_SYSTEM:
+		return "STRING_SYSTEM"
+	case STRING_TOINT:
+		return "STRING_TOINT"
+	case CMP_REG:
+		return "CMP_REG"
+	case CMP_IMMEDIATE:
+		return "CMP_IMMEDIATE"
+	case CMP_STRING:
+		return "CMP_STRING"
+	case IS_STRING:
+		return "IS_STRING"
+	case IS_INTEGER:
+		return "IS_INTEGER"
+	case NOP_OP:
+		return "NOP"
+	case REG_STORE:
+		return "REG_STORE"
+	case PEEK:
+		return "PEEK"
+	case POKE:
+		return "POKE"
+	case MEMCPY:
+		return "MEMCPY"
+	case STACK_PUSH:
+		return "PUSH"
+	case STACK_POP:
+		return "POP"
+	case STACK_RET:
+		return "RET"
+	case STACK_CALL:
+		return "CALL"
+	case TRAP_OP:
+		return "TRAP"
+	}
+	return "UNKNOWN OPCODE .."
+}
+
+// Value returns the byte-value of the opcode.
+func (o *Opcode) Value() byte {
+	return (o.instruction)
+}

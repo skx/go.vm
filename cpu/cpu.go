@@ -17,6 +17,8 @@ import (
 	"os/exec"
 	"strconv"
 	"time"
+
+	"github.com/skx/go.vm/opcode"
 )
 
 // Flags holds the CPU flags - of which we only have one.
@@ -145,28 +147,22 @@ func (c *CPU) Run() {
 	run := true
 	for run {
 
-		instruction := c.mem[c.ip]
-		debugPrintf("About to execute instruction %02X\n", instruction)
+		op := opcode.NewOpcode(c.mem[c.ip])
+		debugPrintf("%04X %02X [%s]\n", c.ip, op.Value(), op.String())
 
-		switch instruction {
-		case 0x00:
-			debugPrintf("EXIT\n")
+		switch int(op.Value()) {
+		case opcode.EXIT:
 			run = false
 
-		case 0x01:
-			debugPrintf("INT_STORE\n")
-
+		case opcode.INT_STORE:
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
 			c.ip += 1
 			val := c.read2Val()
-
-			debugPrintf("\tSet register %02X to %04X\n", reg, val)
 			c.regs[reg].SetInt(val)
 
-		case 0x02:
-			debugPrintf("INT_PRINT\n")
+		case opcode.INT_PRINT:
 			// register
 			c.ip += 1
 			reg := c.mem[c.ip]
@@ -179,8 +175,7 @@ func (c *CPU) Run() {
 			}
 			c.ip += 1
 
-		case 0x03:
-			debugPrintf("INT_TOSTRING\n")
+		case opcode.INT_TOSTRING:
 			// register
 			c.ip += 1
 			reg := c.mem[c.ip]
@@ -194,8 +189,7 @@ func (c *CPU) Run() {
 			// next instruction
 			c.ip += 1
 
-		case 0x04:
-			debugPrintf("INT_RANDOM\n")
+		case opcode.INT_RANDOM:
 			// register
 			c.ip += 1
 			reg := c.mem[c.ip]
@@ -208,30 +202,26 @@ func (c *CPU) Run() {
 			c.regs[reg].SetInt(r1.Intn(0xffff))
 			c.ip += 1
 
-		case 0x10:
-			debugPrintf("JUMP\n")
+		case opcode.JUMP_TO:
 			c.ip += 1
 			addr := c.read2Val()
 			c.ip = addr
 
-		case 0x11:
-			debugPrintf("JUMP_Z\n")
+		case opcode.JUMP_Z:
 			c.ip += 1
 			addr := c.read2Val()
 			if c.flags.z {
 				c.ip = addr
 			}
 
-		case 0x12:
-			debugPrintf("JUMP_NZ\n")
+		case opcode.JUMP_NZ:
 			c.ip += 1
 			addr := c.read2Val()
 			if !c.flags.z {
 				c.ip = addr
 			}
 
-		case 0x20:
-			debugPrintf("XOR\n")
+		case opcode.XOR_OP:
 			c.ip += 1
 			res := c.mem[c.ip]
 			c.ip += 1
@@ -245,8 +235,7 @@ func (c *CPU) Run() {
 			b_val := c.regs[b].GetInt()
 			c.regs[res].SetInt(a_val ^ b_val)
 
-		case 0x21:
-			debugPrintf("ADD\n")
+		case opcode.ADD_OP:
 			c.ip += 1
 			res := c.mem[c.ip]
 			c.ip += 1
@@ -260,8 +249,7 @@ func (c *CPU) Run() {
 			b_val := c.regs[b].GetInt()
 			c.regs[res].SetInt(a_val + b_val)
 
-		case 0x22:
-			debugPrintf("SUB\n")
+		case opcode.SUB_OP:
 			c.ip += 1
 			res := c.mem[c.ip]
 			c.ip += 1
@@ -280,8 +268,7 @@ func (c *CPU) Run() {
 				c.flags.z = true
 			}
 
-		case 0x23:
-			debugPrintf("MUL\n")
+		case opcode.MUL_OP:
 			c.ip += 1
 			res := c.mem[c.ip]
 			c.ip += 1
@@ -295,8 +282,7 @@ func (c *CPU) Run() {
 			b_val := c.regs[b].GetInt()
 			c.regs[res].SetInt(a_val * b_val)
 
-		case 0x24:
-			debugPrintf("DIV\n")
+		case opcode.DIV_OP:
 			c.ip += 1
 			res := c.mem[c.ip]
 			c.ip += 1
@@ -315,8 +301,7 @@ func (c *CPU) Run() {
 			}
 			c.regs[res].SetInt(a_val / b_val)
 
-		case 0x25:
-			debugPrintf("INC\n")
+		case opcode.INC_OP:
 
 			// register
 			c.ip += 1
@@ -341,8 +326,7 @@ func (c *CPU) Run() {
 			// bump past that
 			c.ip += 1
 
-		case 0x26:
-			debugPrintf("DEC\n")
+		case opcode.DEC_OP:
 
 			// register
 			c.ip += 1
@@ -367,8 +351,7 @@ func (c *CPU) Run() {
 			// bump past that
 			c.ip += 1
 
-		case 0x27:
-			debugPrintf("AND\n")
+		case opcode.AND_OP:
 			c.ip += 1
 			res := c.mem[c.ip]
 			c.ip += 1
@@ -382,8 +365,7 @@ func (c *CPU) Run() {
 			b_val := c.regs[b].GetInt()
 			c.regs[res].SetInt(a_val & b_val)
 
-		case 0x28:
-			debugPrintf("OR\n")
+		case opcode.OR_OP:
 			c.ip += 1
 			res := c.mem[c.ip]
 			c.ip += 1
@@ -397,9 +379,7 @@ func (c *CPU) Run() {
 			b_val := c.regs[b].GetInt()
 			c.regs[res].SetInt(a_val | b_val)
 
-		case 0x30:
-			debugPrintf("STORE_STRING\n")
-
+		case opcode.STRING_STORE:
 			// register
 			c.ip += 1
 			reg := c.mem[c.ip]
@@ -409,14 +389,11 @@ func (c *CPU) Run() {
 
 			// read it
 			str := c.readString()
-			debugPrintf("\tRead String: '%s'\n", str)
 
 			// store the string
 			c.regs[reg].SetString(str)
 
-		case 0x31:
-			debugPrintf("PRINT_STRING\n")
-
+		case opcode.STRING_PRINT:
 			// register
 			c.ip += 1
 			reg := c.mem[c.ip]
@@ -424,9 +401,7 @@ func (c *CPU) Run() {
 			fmt.Printf("%s", c.regs[reg].GetString())
 			c.ip += 1
 
-		case 0x32:
-			debugPrintf("STRING_CONCAT\n")
-
+		case opcode.STRING_CONCAT:
 			// output register
 			c.ip += 1
 			res := c.mem[c.ip]
@@ -446,9 +421,7 @@ func (c *CPU) Run() {
 
 			c.regs[res].SetString(a_val + b_val)
 
-		case 0x33:
-			debugPrintf("SYSTEM\n")
-
+		case opcode.STRING_SYSTEM:
 			// register
 			c.ip += 1
 			r := c.mem[c.ip]
@@ -472,9 +445,7 @@ func (c *CPU) Run() {
 				fmt.Printf("%s", err.String())
 			}
 
-		case 0x34:
-			debugPrintf("STRING_TOINT\n")
-
+		case opcode.STRING_TOINT:
 			// register
 			c.ip += 1
 			reg := c.mem[c.ip]
@@ -493,8 +464,7 @@ func (c *CPU) Run() {
 			// next instruction
 			c.ip += 1
 
-		case 0x40:
-			debugPrintf("CMP_REG\n")
+		case opcode.CMP_REG:
 			c.ip += 1
 			r1 := int(c.mem[c.ip])
 			c.ip += 1
@@ -514,8 +484,7 @@ func (c *CPU) Run() {
 				}
 			}
 
-		case 0x41:
-			debugPrintf("CMP_IMMEDIATE\n")
+		case opcode.CMP_IMMEDIATE:
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
@@ -528,8 +497,7 @@ func (c *CPU) Run() {
 				c.flags.z = false
 			}
 
-		case 0x42:
-			debugPrintf("CMP_STR\n")
+		case opcode.CMP_STRING:
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
@@ -544,8 +512,7 @@ func (c *CPU) Run() {
 				c.flags.z = false
 			}
 
-		case 0x43:
-			debugPrintf("IS_STRING\n")
+		case opcode.IS_STRING:
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
@@ -557,8 +524,7 @@ func (c *CPU) Run() {
 				c.flags.z = false
 			}
 
-		case 0x44:
-			debugPrintf("IS_INT\n")
+		case opcode.IS_INTEGER:
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
@@ -570,13 +536,10 @@ func (c *CPU) Run() {
 				c.flags.z = false
 			}
 
-		case 0x50:
-			debugPrintf("NOP\n")
+		case opcode.NOP_OP:
 			c.ip += 1
 
-		case 0x51:
-			debugPrintf("STORE\n")
-
+		case opcode.REG_STORE:
 			// register
 			c.ip += 1
 			dst := int(c.mem[c.ip])
@@ -596,9 +559,7 @@ func (c *CPU) Run() {
 				os.Exit(3)
 			}
 
-		case 0x60:
-			debugPrintf("PEEK\n")
-
+		case opcode.PEEK:
 			// register
 			c.ip += 1
 			result := int(c.mem[c.ip])
@@ -613,8 +574,7 @@ func (c *CPU) Run() {
 			c.regs[result].SetInt(int(c.mem[addr]))
 			c.ip += 1
 
-		case 0x61:
-			debugPrintf("POKE\n")
+		case opcode.POKE:
 
 			// register
 			c.ip += 1
@@ -629,12 +589,9 @@ func (c *CPU) Run() {
 			addr := c.regs[dst].GetInt()
 			val := c.regs[src].GetInt()
 
-			debugPrintf("Writing %02X to %04X\n", val, addr)
 			c.mem[addr] = byte(val)
 
-		case 0x62:
-			debugPrintf("MEMCPY\n")
-
+		case opcode.MEMCPY:
 			// register
 			c.ip += 1
 			dst := int(c.mem[c.ip])
@@ -667,9 +624,7 @@ func (c *CPU) Run() {
 				i += 1
 			}
 
-		case 0x70:
-			debugPrintf("PUSH\n")
-
+		case opcode.STACK_PUSH:
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
@@ -678,9 +633,7 @@ func (c *CPU) Run() {
 			// Store the value in the register on the stack
 			c.stack.Push(c.regs[reg].GetInt())
 
-		case 0x71:
-			debugPrintf("POP\n")
-
+		case opcode.STACK_POP:
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
@@ -695,9 +648,7 @@ func (c *CPU) Run() {
 			val, _ := c.stack.Pop()
 			c.regs[reg].SetInt(val)
 
-		case 0x72:
-			debugPrintf("RET\n")
-
+		case opcode.STACK_RET:
 			// Ensure our stack isn't empty
 			if c.stack.Empty() {
 				fmt.Printf("Stack Underflow!\n")
@@ -710,8 +661,7 @@ func (c *CPU) Run() {
 			// jump
 			c.ip = addr
 
-		case 0x73:
-			debugPrintf("CALL\n")
+		case opcode.STACK_CALL:
 			c.ip += 1
 
 			addr := c.read2Val()
@@ -722,8 +672,7 @@ func (c *CPU) Run() {
 			// jump to the call address
 			c.ip = addr
 
-		case 0x80:
-			debugPrintf("TRAP\n")
+		case opcode.TRAP_OP:
 			c.ip += 1
 
 			num := c.read2Val()
@@ -733,7 +682,7 @@ func (c *CPU) Run() {
 				fn(c, num)
 			}
 		default:
-			fmt.Printf("Unrecognized/Unimplemented opcode %02X at IP %04X\n", instruction, c.ip)
+			fmt.Printf("Unrecognized/Unimplemented opcode %02X at IP %04X\n", op.Value(), c.ip)
 			os.Exit(1)
 		}
 
