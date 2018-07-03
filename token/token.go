@@ -17,7 +17,7 @@ const (
 	LABEL   = "LABEL"
 	INT     = "INT"
 	STRING  = "STRING"
-	COMMA   = ","
+	COMMA   = "COMMA"
 
 	// math
 	ADD = "ADD"
