@@ -6,7 +6,7 @@
 go.vm
 -----
 
-This project is a golang based compiler and intepreter for a simple virtual
+This project is a golang based compiler and interpreter for a simple virtual
 machine.  It is a port of the existing project:
 
 * https://github.com/skx/simple.vm
@@ -14,7 +14,7 @@ machine.  It is a port of the existing project:
 (The original project has a perl based compiler/decompiler and an interpreter
 written in C.)
 
-You can get a feel for what it looks like by refering to either the parent
+You can get a feel for what it looks like by referring to either the parent
 project, or [the examples](examples/) contained in this repository.
 
 This particular virtual machine is intentionally simple, but despite that it is hopefully implemented in a readable fashion.  ("Simplicity" here means that we support only a small number of instructions, and the 16-registers the virtual CPU possesses can store strings and integers, but not floating-point values.)
@@ -125,7 +125,7 @@ You can use the `dump` command to see the structure the lexer generates:
 
 ## The interpreter
 
-The core of the intepreter is located in the file [cpu.go](cpu/cpu.go) and is
+The core of the interpreter is located in the file [cpu.go](cpu/cpu.go) and is
 as simple and naive as you would expect.  There are some supporting files
 in the same directory:
 
