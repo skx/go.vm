@@ -60,8 +60,15 @@ func (r *Register) GetInt() int {
 }
 
 // SetInt stores the given integer in the register.
+// Note that a register may only contain integers in the range 0x0000-0xffff
 func (r *Register) SetInt(v int) {
-	r.o = &IntegerObject{Value: v}
+	if v <= 0 {
+		r.o = &IntegerObject{Value: 0}
+	} else if v >= 0xffff {
+		r.o = &IntegerObject{Value: 0xffff}
+	} else {
+		r.o = &IntegerObject{Value: v}
+	}
 }
 
 // GetInt retrieves the string content of the given register.
