@@ -1,6 +1,8 @@
 package opcode
 
 var (
+	// EXIT is our first opcode.
+	// The rest follow, grouped by functionality.
 	EXIT = 0x00
 
 	INT_STORE    = 0x01
