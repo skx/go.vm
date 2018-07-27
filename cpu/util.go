@@ -14,11 +14,11 @@ import (
 //
 
 // debugPrintf outputs some debugging details when `$DEBUG=1`.
-func debugPrintf(fmt_ string, args ...interface{}) {
+func debugPrintf(format string, args ...interface{}) {
 	if os.Getenv("DEBUG") == "" {
 		return
 	}
-	prefix := fmt.Sprintf("%s", fmt_)
+	prefix := fmt.Sprintf("%s", format)
 	fmt.Printf(prefix, args...)
 }
 
