@@ -2,7 +2,7 @@
 // This is the "compiler" for our simple virtual machine.
 //
 // It reads the string of tokens from the lexer, and outputs the bytecode
-// which is equivilent.
+// which is equivalent.
 //
 // The approach to labels is the same as in the inspiring-project:  Every time
 // we come across a label we output a pair of temporary bytes in our bytecode.
@@ -397,7 +397,7 @@ func (p *Compiler) isStrOp() {
 	p.bytecode = append(p.bytecode, byte(reg))
 }
 
-// str2IntOp converst the given string-register to an int.
+// str2IntOp converts the given string-register to an int.
 func (p *Compiler) str2IntOp() {
 	// We're looking for an identifier next.
 	if !p.expectPeek(token.IDENT) {
@@ -411,7 +411,7 @@ func (p *Compiler) str2IntOp() {
 	p.bytecode = append(p.bytecode, byte(reg))
 }
 
-// int2StrOp converst the given int-register to a string.
+// int2StrOp converts the given int-register to a string.
 func (p *Compiler) int2StrOp() {
 	// We're looking for an identifier next.
 	if !p.expectPeek(token.IDENT) {
@@ -701,7 +701,7 @@ func (p *Compiler) cmpOp() {
 	p.nextToken()
 
 	// Now we know what source register we're comparing we need to see
-	// if that comparision is with a string, integer, register value, or a
+	// if that comparison is with a string, integer, register value, or a
 	// label address.
 	switch p.curToken.Type {
 
