@@ -62,11 +62,11 @@ func (l *Lexer) NextToken() token.Token {
 	default:
 		if isDigit(l.ch) {
 			return l.readDecimal()
-		} else {
-			tok.Literal = l.readIdentifier()
-			tok.Type = token.LookupIdentifier(tok.Literal)
-			return tok
 		}
+
+		tok.Literal = l.readIdentifier()
+		tok.Type = token.LookupIdentifier(tok.Literal)
+		return tok
 	}
 	l.readChar()
 	return tok
@@ -125,10 +125,9 @@ func (l *Lexer) readDecimal() token.Token {
 
 	if isEmpty(l.ch) || isWhitespace(l.ch) || l.ch == rune(',') {
 		return token.Token{Type: token.INT, Literal: integer}
-	} else {
-		illegalPart := l.readUntilWhitespace()
-		return token.Token{Type: token.ILLEGAL, Literal: integer + illegalPart}
 	}
+	illegalPart := l.readUntilWhitespace()
+	return token.Token{Type: token.ILLEGAL, Literal: integer + illegalPart}
 }
 
 // read string
@@ -177,9 +176,8 @@ func (l *Lexer) readLabel() string {
 func (l *Lexer) peekChar() rune {
 	if l.readPosition >= len(l.characters) {
 		return rune(0)
-	} else {
-		return l.characters[l.readPosition]
 	}
+	return l.characters[l.readPosition]
 }
 
 func isIdentifier(ch rune) bool {
