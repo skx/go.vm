@@ -30,6 +30,7 @@ import (
 	"github.com/skx/go.vm/token"
 )
 
+// Compiler contains our compiler-state
 type Compiler struct {
 	l         *lexer.Lexer   // our lexer
 	curToken  token.Token    // current token
@@ -77,11 +78,11 @@ func (p *Compiler) getRegister(input string) byte {
 
 	if (i >= 0) && (i <= 15) {
 		return byte(i)
-	} else {
-		fmt.Printf("Register out of bounds: #%s\n", input)
-		os.Exit(1)
-		return 0
 	}
+
+	fmt.Printf("Register out of bounds: #%s\n", input)
+	os.Exit(1)
+	return 0
 }
 
 // Dump processe the stream of tokens from the lexer and shows the structure
