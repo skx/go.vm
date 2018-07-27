@@ -22,22 +22,22 @@ func NewStack() *Stack {
 	return &Stack{}
 }
 
-// Is the stack empty?
+// Empty returns true if the stack is empty.
 func (s *Stack) Empty() bool {
 	return (len(s.entries) <= 0)
 }
 
-// Get the length of the stack
+// Size retrieves the length of the stack.
 func (s *Stack) Size() int {
 	return (len(s.entries))
 }
 
-// Push adds a value to the stack
+// Push adds a value to the stack.
 func (s *Stack) Push(value int) {
 	s.entries = append(s.entries, value)
 }
 
-// Pop removes a value from the stack
+// Pop removes a value from the stack.
 func (s *Stack) Pop() (int, error) {
 	if s.Empty() {
 		return 0, errors.New("Pop from an empty stack")
