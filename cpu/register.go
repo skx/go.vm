@@ -71,7 +71,7 @@ func (r *Register) SetInt(v int) {
 	}
 }
 
-// GetInt retrieves the string content of the given register.
+// GetString retrieves the string content of the given register.
 // If the register does not contain a string that is a fatal error.
 func (r *Register) GetString() string {
 	switch arg := r.o.(type) {
@@ -91,7 +91,7 @@ func (r *Register) SetString(v string) {
 	r.o = &StringObject{Value: v}
 }
 
-// Return the type of a registers contents `int` vs. `string`.
+// Type returns the type of a registers contents `int` vs. `string`.
 func (r *Register) Type() string {
 	return (r.o.Type())
 }
