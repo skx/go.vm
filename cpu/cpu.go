@@ -231,9 +231,9 @@ func (c *CPU) Run() {
 			c.ip += 1
 
 			// store result
-			a_val := c.regs[a].GetInt()
-			b_val := c.regs[b].GetInt()
-			c.regs[res].SetInt(a_val ^ b_val)
+			aVal := c.regs[a].GetInt()
+			bVal := c.regs[b].GetInt()
+			c.regs[res].SetInt(aVal ^ bVal)
 
 		case opcode.ADD_OP:
 			c.ip += 1
@@ -245,9 +245,9 @@ func (c *CPU) Run() {
 			c.ip += 1
 
 			// store result
-			a_val := c.regs[a].GetInt()
-			b_val := c.regs[b].GetInt()
-			c.regs[res].SetInt(a_val + b_val)
+			aVal := c.regs[a].GetInt()
+			bVal := c.regs[b].GetInt()
+			c.regs[res].SetInt(aVal + bVal)
 
 		case opcode.SUB_OP:
 			c.ip += 1
@@ -259,9 +259,9 @@ func (c *CPU) Run() {
 			c.ip += 1
 
 			// store result
-			a_val := c.regs[a].GetInt()
-			b_val := c.regs[b].GetInt()
-			c.regs[res].SetInt(a_val - b_val)
+			aVal := c.regs[a].GetInt()
+			bVal := c.regs[b].GetInt()
+			c.regs[res].SetInt(aVal - bVal)
 
 			// set the zero-flag if the result was zero or less
 			if c.regs[res].GetInt() <= 0 {
@@ -278,9 +278,9 @@ func (c *CPU) Run() {
 			c.ip += 1
 
 			// store result
-			a_val := c.regs[a].GetInt()
-			b_val := c.regs[b].GetInt()
-			c.regs[res].SetInt(a_val * b_val)
+			aVal := c.regs[a].GetInt()
+			bVal := c.regs[b].GetInt()
+			c.regs[res].SetInt(aVal * bVal)
 
 		case opcode.DIV_OP:
 			c.ip += 1
@@ -292,14 +292,14 @@ func (c *CPU) Run() {
 			c.ip += 1
 
 			// store result
-			a_val := c.regs[a].GetInt()
-			b_val := c.regs[b].GetInt()
+			aVal := c.regs[a].GetInt()
+			bVal := c.regs[b].GetInt()
 
-			if b_val == 0 {
+			if bVal == 0 {
 				fmt.Printf("Attempting to divide by zero - denying\n")
 				os.Exit(3)
 			}
-			c.regs[res].SetInt(a_val / b_val)
+			c.regs[res].SetInt(aVal / bVal)
 
 		case opcode.INC_OP:
 
@@ -361,9 +361,9 @@ func (c *CPU) Run() {
 			c.ip += 1
 
 			// store result
-			a_val := c.regs[a].GetInt()
-			b_val := c.regs[b].GetInt()
-			c.regs[res].SetInt(a_val & b_val)
+			aVal := c.regs[a].GetInt()
+			bVal := c.regs[b].GetInt()
+			c.regs[res].SetInt(aVal & bVal)
 
 		case opcode.OR_OP:
 			c.ip += 1
@@ -375,9 +375,9 @@ func (c *CPU) Run() {
 			c.ip += 1
 
 			// store result
-			a_val := c.regs[a].GetInt()
-			b_val := c.regs[b].GetInt()
-			c.regs[res].SetInt(a_val | b_val)
+			aVal := c.regs[a].GetInt()
+			bVal := c.regs[b].GetInt()
+			c.regs[res].SetInt(aVal | bVal)
 
 		case opcode.STRING_STORE:
 			// register
@@ -416,10 +416,10 @@ func (c *CPU) Run() {
 
 			c.ip += 1
 
-			a_val := c.regs[a].GetString()
-			b_val := c.regs[b].GetString()
+			aVal := c.regs[a].GetString()
+			bVal := c.regs[b].GetString()
 
-			c.regs[res].SetString(a_val + b_val)
+			c.regs[res].SetString(aVal + bVal)
 
 		case opcode.STRING_SYSTEM:
 			// register
@@ -604,23 +604,23 @@ func (c *CPU) Run() {
 			c.ip += 1
 
 			// get the addresses from the registers
-			src_addr := c.regs[src].GetInt()
-			dst_addr := c.regs[dst].GetInt()
+			srcAddr := c.regs[src].GetInt()
+			dstAddr := c.regs[dst].GetInt()
 			length := c.regs[len].GetInt()
 
 			i := 0
 			for i < length {
 
-				if dst_addr >= 0xFFFF {
-					dst_addr = 0
+				if dstAddr >= 0xFFFF {
+					dstAddr = 0
 				}
-				if src_addr >= 0xFFFF {
-					src_addr = 0
+				if srcAddr >= 0xFFFF {
+					srcAddr = 0
 				}
 
-				c.mem[dst_addr] = c.mem[src_addr]
-				dst_addr += 1
-				src_addr += 1
+				c.mem[dstAddr] = c.mem[srcAddr]
+				dstAddr += 1
+				srcAddr += 1
 				i += 1
 			}
 
