@@ -20,7 +20,7 @@ import (
 type TrapFunction func(c *CPU, num int)
 
 //
-// Create an array of trap-functions.
+// TRAPS is an array of our trap-functions.
 //
 var TRAPS [0xffff]TrapFunction
 
@@ -33,6 +33,8 @@ var reader *bufio.Reader
 // Trap Functions now follow
 //
 
+// TrapNOP is the default trap-function for any trap IDs that haven't
+// explicitly been setup.
 func TrapNOP(c *CPU, num int) {
 	fmt.Printf("Trap function not defined: 0x%04X\n", num)
 }
