@@ -158,6 +158,11 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
+			if reg < 0 || reg > 15 {
+				fmt.Printf("Register %d out of range\n", reg)
+				os.Exit(1)
+			}
+
 			c.ip += 1
 			val := c.read2Val()
 			c.regs[reg].SetInt(val)
@@ -167,6 +172,10 @@ func (c *CPU) Run() {
 			c.ip += 1
 			reg := c.mem[c.ip]
 
+			if reg < 0 || reg > 15 {
+				fmt.Printf("Register %d out of range\n", reg)
+				os.Exit(1)
+			}
 			val := c.regs[reg].GetInt()
 			if val < 256 {
 				fmt.Printf("%02X", val)
@@ -179,6 +188,11 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := c.mem[c.ip]
+
+			if reg < 0 || reg > 15 {
+				fmt.Printf("Register %d out of range\n", reg)
+				os.Exit(1)
+			}
 
 			// get value
 			i := c.regs[reg].GetInt()
@@ -193,6 +207,11 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := c.mem[c.ip]
+
+			if reg < 0 || reg > 15 {
+				fmt.Printf("Register %d out of range\n", reg)
+				os.Exit(1)
+			}
 
 			// New random source
 			s1 := rand.NewSource(time.Now().UnixNano())
@@ -307,6 +326,11 @@ func (c *CPU) Run() {
 			c.ip += 1
 			reg := c.mem[c.ip]
 
+			if reg < 0 || reg > 15 {
+				fmt.Printf("Register %d out of range\n", reg)
+				os.Exit(1)
+			}
+
 			// get the value
 			val := c.regs[reg].GetInt()
 
@@ -331,6 +355,11 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := c.mem[c.ip]
+
+			if reg < 0 || reg > 15 {
+				fmt.Printf("Register %d out of range\n", reg)
+				os.Exit(1)
+			}
 
 			// get the value
 			val := c.regs[reg].GetInt()
@@ -384,6 +413,11 @@ func (c *CPU) Run() {
 			c.ip += 1
 			reg := c.mem[c.ip]
 
+			if reg < 0 || reg > 15 {
+				fmt.Printf("Register %d out of range\n", reg)
+				os.Exit(1)
+			}
+
 			// bump past that to the length + string
 			c.ip += 1
 
@@ -397,6 +431,11 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := c.mem[c.ip]
+
+			if reg < 0 || reg > 15 {
+				fmt.Printf("Register %d out of range\n", reg)
+				os.Exit(1)
+			}
 
 			fmt.Printf("%s", c.regs[reg].GetString())
 			c.ip += 1
@@ -450,6 +489,11 @@ func (c *CPU) Run() {
 			c.ip += 1
 			reg := c.mem[c.ip]
 
+			if reg < 0 || reg > 15 {
+				fmt.Printf("Register %d out of range\n", reg)
+				os.Exit(1)
+			}
+
 			// get value
 			s := c.regs[reg].GetString()
 
@@ -488,6 +532,12 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
+
+			if reg < 0 || reg > 15 {
+				fmt.Printf("Register %d out of range\n", reg)
+				os.Exit(1)
+			}
+
 			c.ip += 1
 			val := c.read2Val()
 
@@ -501,6 +551,11 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
+			if reg < 0 || reg > 15 {
+				fmt.Printf("Register %d out of range\n", reg)
+				os.Exit(1)
+			}
+
 			c.ip += 1
 
 			// read it
@@ -516,6 +571,11 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
+			if reg < 0 || reg > 15 {
+				fmt.Printf("Register %d out of range\n", reg)
+				os.Exit(1)
+			}
+
 			c.ip += 1
 
 			if c.regs[reg].Type() == "string" {
@@ -528,6 +588,11 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
+			if reg < 0 || reg > 15 {
+				fmt.Printf("Register %d out of range\n", reg)
+				os.Exit(1)
+			}
+
 			c.ip += 1
 
 			if c.regs[reg].Type() == "int" {
@@ -628,6 +693,11 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
+			if reg < 0 || reg > 15 {
+				fmt.Printf("Register %d out of range\n", reg)
+				os.Exit(1)
+			}
+
 			c.ip += 1
 
 			// Store the value in the register on the stack
@@ -637,6 +707,11 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
+			if reg < 0 || reg > 15 {
+				fmt.Printf("Register %d out of range\n", reg)
+				os.Exit(1)
+			}
+
 			c.ip += 1
 
 			// Ensure our stack isn't empty
