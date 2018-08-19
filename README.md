@@ -174,5 +174,34 @@ on behalf of a program.  The following traps are currently defined & available:
 
 Adding your own trap-functions should be as simple as editing [cpu/traps.go](cpu/traps.go).
 
+
+## Fuzzing
+
+Fuzz-testing is a powerful technique to discover bugs, in brief it consists
+of running a program with numerous random inputs and waiting for it to die.
+
+I've fuzzed this repository repeatedly via [go-fuzz](https://github.com/dvyukov/go-fuzz) and fixed a couple of minor issues.
+
+Note however that fuzzing will trigger some _expected_ failures.  Our virtual CPU has only 16 registers, so for example a program that tries to set register #30 to a particular value is invalid, and will terminate the virtual machine.
+
+Because fuzzing involves using "random" input it is possible there are bugs lurking in the virtual-machine which I've not been lucky enough to catch, so if you wish to fuzz this is how you do it.   First of all install the tool:
+
+     $ go get github.com/dvyukov/go-fuzz/go-fuzz
+     $ go get github.com/dvyukov/go-fuzz/go-fuzz-build
+
+Now you can build the interpreter using it:
+
+     $ go-fuzz-build github.com/skx/go.vm/fuzz
+
+Finally you can launch the fuzzer:
+
+     $ go-fuzz -nprocs=1 -bin=fuzz-fuzz.zip -workdir=workdir
+
+Interesting results will appear in `workdir/crashers/` some crashes will be invalid and you can see that via the `*.output` files which contain STDOUT from the run (more or less).  For example this is an "expected" failure:
+
+     $ cat workdir/crashers/92108737efbd0ac6b42ae4473db5a257314b36cf.output
+     Register 99 out of range
+     exit status 1
+
 Steve
 --
