@@ -30,7 +30,7 @@ type Flags struct {
 // CPU is our virtual machine state.
 type CPU struct {
 	// Registers
-	regs [16]*Register
+	regs [15]*Register
 
 	// Flags
 	flags Flags
@@ -61,7 +61,7 @@ func NewCPU() *CPU {
 func (c *CPU) Reset() {
 
 	// Reset registers
-	for i := 0; i < 16; i++ {
+	for i := 0; i < len(c.regs); i++ {
 		c.regs[i] = NewRegister()
 	}
 
@@ -158,7 +158,9 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
-			if reg < 0 || reg > 15 {
+
+			// bounds-check our register
+			if reg < 0 || reg > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -172,10 +174,12 @@ func (c *CPU) Run() {
 			c.ip += 1
 			reg := c.mem[c.ip]
 
-			if reg < 0 || reg > 15 {
+			// bounds-check our register
+			if reg < 0 || int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
+
 			val := c.regs[reg].GetInt()
 			if val < 256 {
 				fmt.Printf("%02X", val)
@@ -189,7 +193,8 @@ func (c *CPU) Run() {
 			c.ip += 1
 			reg := c.mem[c.ip]
 
-			if reg < 0 || reg > 15 {
+			// bounds-check our register
+			if reg < 0 || int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -208,7 +213,8 @@ func (c *CPU) Run() {
 			c.ip += 1
 			reg := c.mem[c.ip]
 
-			if reg < 0 || reg > 15 {
+			// bounds-check our register
+			if reg < 0 || int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -326,7 +332,8 @@ func (c *CPU) Run() {
 			c.ip += 1
 			reg := c.mem[c.ip]
 
-			if reg < 0 || reg > 15 {
+			// bounds-check our register
+			if reg < 0 || int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -356,7 +363,8 @@ func (c *CPU) Run() {
 			c.ip += 1
 			reg := c.mem[c.ip]
 
-			if reg < 0 || reg > 15 {
+			// bounds-check our register
+			if reg < 0 || int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -413,7 +421,8 @@ func (c *CPU) Run() {
 			c.ip += 1
 			reg := c.mem[c.ip]
 
-			if reg < 0 || reg > 15 {
+			// bounds-check our register
+			if reg < 0 || int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -432,7 +441,8 @@ func (c *CPU) Run() {
 			c.ip += 1
 			reg := c.mem[c.ip]
 
-			if reg < 0 || reg > 15 {
+			// bounds-check our register
+			if reg < 0 || int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -489,7 +499,8 @@ func (c *CPU) Run() {
 			c.ip += 1
 			reg := c.mem[c.ip]
 
-			if reg < 0 || reg > 15 {
+			// bounds-check our register
+			if reg < 0 || int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -533,7 +544,8 @@ func (c *CPU) Run() {
 			c.ip += 1
 			reg := int(c.mem[c.ip])
 
-			if reg < 0 || reg > 15 {
+			// bounds-check our register
+			if reg < 0 || int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -551,7 +563,9 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
-			if reg < 0 || reg > 15 {
+
+			// bounds-check our register
+			if reg < 0 || int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -571,7 +585,9 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
-			if reg < 0 || reg > 15 {
+
+			// bounds-check our register
+			if reg < 0 || int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -588,7 +604,9 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
-			if reg < 0 || reg > 15 {
+
+			// bounds-check our register
+			if reg < 0 || int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -693,7 +711,9 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
-			if reg < 0 || reg > 15 {
+
+			// bounds-check our register
+			if reg < 0 || int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -707,7 +727,9 @@ func (c *CPU) Run() {
 			// register
 			c.ip += 1
 			reg := int(c.mem[c.ip])
-			if reg < 0 || reg > 15 {
+
+			// bounds-check our register
+			if reg < 0 || int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -759,6 +781,7 @@ func (c *CPU) Run() {
 		default:
 			fmt.Printf("Unrecognized/Unimplemented opcode %02X at IP %04X\n", op.Value(), c.ip)
 			os.Exit(1)
+			c.ip += 1
 		}
 
 		// Ensure our instruction-pointer wraps around.
