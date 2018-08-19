@@ -37,6 +37,7 @@ var reader *bufio.Reader
 // explicitly been setup.
 func TrapNOP(c *CPU, num int) {
 	fmt.Printf("Trap function not defined: 0x%04X\n", num)
+	os.Exit(1)
 }
 
 // StrLenTrap returns the length of a string.
