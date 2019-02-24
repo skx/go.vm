@@ -1,4 +1,3 @@
-[![Travis CI](https://img.shields.io/travis/skx/go.vm/master.svg?style=flat-square)](https://travis-ci.org/skx/go.vm)
 [![Go Report Card](https://goreportcard.com/badge/github.com/skx/go.vm)](https://goreportcard.com/report/github.com/skx/go.vm)
 [![license](https://img.shields.io/github/license/skx/go.vm.svg)](https://github.com/skx/go.vm/blob/master/LICENSE)
 [![Release](https://img.shields.io/github/release/skx/go.vm.svg)](https://github.com/skx/go.vm/releases/latest)
@@ -202,6 +201,18 @@ Interesting results will appear in `workdir/crashers/` some crashes will be inva
      $ cat workdir/crashers/92108737efbd0ac6b42ae4473db5a257314b36cf.output
      Register 99 out of range
      exit status 1
+
+
+## Github Setup
+
+This repository is configured to run tests upon every commit, and when
+pull-requests are created/updated.  The testing is carried out via
+[.github/run-tests.sh](.github/run-tests.sh) which is used by the
+[github-action-tester](https://github.com/skx/github-action-tester) action.
+
+Releases are automated in a similar fashion via [.github/build](.github/build),
+and the [github-action-publish-binaries](https://github.com/skx/github-action-publish-binaries) action.
+
 
 Steve
 --
