@@ -10,7 +10,7 @@ func TestNextTokenTrivial(t *testing.T) {
 	input := `,`
 
 	tests := []struct {
-		expectedType    token.TokenType
+		expectedType    token.Type
 		expectedLiteral string
 	}{
 		{token.COMMA, ","},
@@ -36,7 +36,7 @@ func TestNextTokenReal(t *testing.T) {
         print_int #0
 `
 	tests := []struct {
-		expectedType    token.TokenType
+		expectedType    token.Type
 		expectedLiteral string
 	}{
 		{token.STORE, "store"},
@@ -94,7 +94,7 @@ print_int #21
 # comment on two-lines`
 
 	tests := []struct {
-		expectedType    token.TokenType
+		expectedType    token.Type
 		expectedLiteral string
 	}{
 		{token.PRINT_INT, "print_int"},
