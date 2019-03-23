@@ -851,19 +851,19 @@ func (p *Compiler) printString() {
 }
 
 // determinate current token is t or not.
-func (p *Compiler) curTokenIs(t token.TokenType) bool {
+func (p *Compiler) curTokenIs(t token.Type) bool {
 	return p.curToken.Type == t
 }
 
 // determinate next token is t or not
-func (p *Compiler) peekTokenIs(t token.TokenType) bool {
+func (p *Compiler) peekTokenIs(t token.Type) bool {
 	return p.peekToken.Type == t
 }
 
 // expect next token is t
 // succeed: return true and forward token
 // failed: return false and store error
-func (p *Compiler) expectPeek(t token.TokenType) bool {
+func (p *Compiler) expectPeek(t token.Type) bool {
 	if p.peekTokenIs(t) {
 		p.nextToken()
 		return true
@@ -872,7 +872,7 @@ func (p *Compiler) expectPeek(t token.TokenType) bool {
 	return false
 }
 
-func (p *Compiler) peekError(t token.TokenType) {
+func (p *Compiler) peekError(t token.Type) {
 	fmt.Printf("expected next token to be %s, got %s instead", t, p.curToken.Type)
 	os.Exit(1)
 }

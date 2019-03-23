@@ -133,9 +133,9 @@ func (c *CPU) readString() string {
 // skipping over both bytes in the IP.
 func (c *CPU) read2Val() int {
 	l := int(c.mem[c.ip])
-	c.ip += 1
+	c.ip++
 	h := int(c.mem[c.ip])
-	c.ip += 1
+	c.ip++
 
 	val := l + h*256
 	return (val)
@@ -156,7 +156,7 @@ func (c *CPU) Run() {
 
 		case opcode.INT_STORE:
 			// register
-			c.ip += 1
+			c.ip++
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
@@ -165,13 +165,13 @@ func (c *CPU) Run() {
 				os.Exit(1)
 			}
 
-			c.ip += 1
+			c.ip++
 			val := c.read2Val()
 			c.regs[reg].SetInt(val)
 
 		case opcode.INT_PRINT:
 			// register
-			c.ip += 1
+			c.ip++
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
@@ -186,11 +186,11 @@ func (c *CPU) Run() {
 			} else {
 				fmt.Printf("%04X", val)
 			}
-			c.ip += 1
+			c.ip++
 
 		case opcode.INT_TOSTRING:
 			// register
-			c.ip += 1
+			c.ip++
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
@@ -206,11 +206,11 @@ func (c *CPU) Run() {
 			c.regs[reg].SetString(fmt.Sprintf("%d", i))
 
 			// next instruction
-			c.ip += 1
+			c.ip++
 
 		case opcode.INT_RANDOM:
 			// register
-			c.ip += 1
+			c.ip++
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
@@ -225,35 +225,35 @@ func (c *CPU) Run() {
 
 			// New random number
 			c.regs[reg].SetInt(r1.Intn(0xffff))
-			c.ip += 1
+			c.ip++
 
 		case opcode.JUMP_TO:
-			c.ip += 1
+			c.ip++
 			addr := c.read2Val()
 			c.ip = addr
 
 		case opcode.JUMP_Z:
-			c.ip += 1
+			c.ip++
 			addr := c.read2Val()
 			if c.flags.z {
 				c.ip = addr
 			}
 
 		case opcode.JUMP_NZ:
-			c.ip += 1
+			c.ip++
 			addr := c.read2Val()
 			if !c.flags.z {
 				c.ip = addr
 			}
 
 		case opcode.XOR_OP:
-			c.ip += 1
+			c.ip++
 			res := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 			a := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 			b := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 
 			// store result
 			aVal := c.regs[a].GetInt()
@@ -261,13 +261,13 @@ func (c *CPU) Run() {
 			c.regs[res].SetInt(aVal ^ bVal)
 
 		case opcode.ADD_OP:
-			c.ip += 1
+			c.ip++
 			res := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 			a := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 			b := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 
 			// store result
 			aVal := c.regs[a].GetInt()
@@ -275,13 +275,13 @@ func (c *CPU) Run() {
 			c.regs[res].SetInt(aVal + bVal)
 
 		case opcode.SUB_OP:
-			c.ip += 1
+			c.ip++
 			res := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 			a := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 			b := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 
 			// store result
 			aVal := c.regs[a].GetInt()
@@ -294,13 +294,13 @@ func (c *CPU) Run() {
 			}
 
 		case opcode.MUL_OP:
-			c.ip += 1
+			c.ip++
 			res := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 			a := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 			b := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 
 			// store result
 			aVal := c.regs[a].GetInt()
@@ -308,13 +308,13 @@ func (c *CPU) Run() {
 			c.regs[res].SetInt(aVal * bVal)
 
 		case opcode.DIV_OP:
-			c.ip += 1
+			c.ip++
 			res := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 			a := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 			b := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 
 			// store result
 			aVal := c.regs[a].GetInt()
@@ -329,7 +329,7 @@ func (c *CPU) Run() {
 		case opcode.INC_OP:
 
 			// register
-			c.ip += 1
+			c.ip++
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
@@ -346,7 +346,7 @@ func (c *CPU) Run() {
 				val = 0
 			} else {
 				// otherwise be incremented normally
-				val += 1
+				val++
 			}
 
 			// zero?
@@ -355,12 +355,12 @@ func (c *CPU) Run() {
 			c.regs[reg].SetInt(val)
 
 			// bump past that
-			c.ip += 1
+			c.ip++
 
 		case opcode.DEC_OP:
 
 			// register
-			c.ip += 1
+			c.ip++
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
@@ -377,7 +377,7 @@ func (c *CPU) Run() {
 				val = 0xFFFF
 			} else {
 				// otherwise decrease normally
-				val -= 1
+				val--
 			}
 
 			// zero?
@@ -386,16 +386,16 @@ func (c *CPU) Run() {
 			c.regs[reg].SetInt(val)
 
 			// bump past that
-			c.ip += 1
+			c.ip++
 
 		case opcode.AND_OP:
-			c.ip += 1
+			c.ip++
 			res := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 			a := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 			b := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 
 			// store result
 			aVal := c.regs[a].GetInt()
@@ -403,13 +403,13 @@ func (c *CPU) Run() {
 			c.regs[res].SetInt(aVal & bVal)
 
 		case opcode.OR_OP:
-			c.ip += 1
+			c.ip++
 			res := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 			a := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 			b := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 
 			// store result
 			aVal := c.regs[a].GetInt()
@@ -418,7 +418,7 @@ func (c *CPU) Run() {
 
 		case opcode.STRING_STORE:
 			// register
-			c.ip += 1
+			c.ip++
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
@@ -428,7 +428,7 @@ func (c *CPU) Run() {
 			}
 
 			// bump past that to the length + string
-			c.ip += 1
+			c.ip++
 
 			// read it
 			str := c.readString()
@@ -438,7 +438,7 @@ func (c *CPU) Run() {
 
 		case opcode.STRING_PRINT:
 			// register
-			c.ip += 1
+			c.ip++
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
@@ -448,22 +448,22 @@ func (c *CPU) Run() {
 			}
 
 			fmt.Printf("%s", c.regs[reg].GetString())
-			c.ip += 1
+			c.ip++
 
 		case opcode.STRING_CONCAT:
 			// output register
-			c.ip += 1
+			c.ip++
 			res := c.mem[c.ip]
 
 			// src1
-			c.ip += 1
+			c.ip++
 			a := c.mem[c.ip]
 
 			// src2
-			c.ip += 1
+			c.ip++
 			b := c.mem[c.ip]
 
-			c.ip += 1
+			c.ip++
 
 			aVal := c.regs[a].GetString()
 			bVal := c.regs[b].GetString()
@@ -472,9 +472,9 @@ func (c *CPU) Run() {
 
 		case opcode.STRING_SYSTEM:
 			// register
-			c.ip += 1
+			c.ip++
 			r := c.mem[c.ip]
-			c.ip += 1
+			c.ip++
 
 			// run the command
 			toExec := splitCommand(c.regs[r].GetString())
@@ -496,7 +496,7 @@ func (c *CPU) Run() {
 
 		case opcode.STRING_TOINT:
 			// register
-			c.ip += 1
+			c.ip++
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
@@ -517,14 +517,14 @@ func (c *CPU) Run() {
 			}
 
 			// next instruction
-			c.ip += 1
+			c.ip++
 
 		case opcode.CMP_REG:
-			c.ip += 1
+			c.ip++
 			r1 := int(c.mem[c.ip])
-			c.ip += 1
+			c.ip++
 			r2 := int(c.mem[c.ip])
-			c.ip += 1
+			c.ip++
 
 			c.flags.z = false
 
@@ -541,7 +541,7 @@ func (c *CPU) Run() {
 
 		case opcode.CMP_IMMEDIATE:
 			// register
-			c.ip += 1
+			c.ip++
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
@@ -550,7 +550,7 @@ func (c *CPU) Run() {
 				os.Exit(1)
 			}
 
-			c.ip += 1
+			c.ip++
 			val := c.read2Val()
 
 			if c.regs[reg].Type() == "int" && c.regs[reg].GetInt() == val {
@@ -561,7 +561,7 @@ func (c *CPU) Run() {
 
 		case opcode.CMP_STRING:
 			// register
-			c.ip += 1
+			c.ip++
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
@@ -570,7 +570,7 @@ func (c *CPU) Run() {
 				os.Exit(1)
 			}
 
-			c.ip += 1
+			c.ip++
 
 			// read it
 			str := c.readString()
@@ -583,7 +583,7 @@ func (c *CPU) Run() {
 
 		case opcode.IS_STRING:
 			// register
-			c.ip += 1
+			c.ip++
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
@@ -592,7 +592,7 @@ func (c *CPU) Run() {
 				os.Exit(1)
 			}
 
-			c.ip += 1
+			c.ip++
 
 			if c.regs[reg].Type() == "string" {
 				c.flags.z = true
@@ -602,7 +602,7 @@ func (c *CPU) Run() {
 
 		case opcode.IS_INTEGER:
 			// register
-			c.ip += 1
+			c.ip++
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
@@ -611,7 +611,7 @@ func (c *CPU) Run() {
 				os.Exit(1)
 			}
 
-			c.ip += 1
+			c.ip++
 
 			if c.regs[reg].Type() == "int" {
 				c.flags.z = true
@@ -620,17 +620,17 @@ func (c *CPU) Run() {
 			}
 
 		case opcode.NOP_OP:
-			c.ip += 1
+			c.ip++
 
 		case opcode.REG_STORE:
 			// register
-			c.ip += 1
+			c.ip++
 			dst := int(c.mem[c.ip])
-			c.ip += 1
+			c.ip++
 
 			// register
 			src := int(c.mem[c.ip])
-			c.ip += 1
+			c.ip++
 
 			// Copy the register - paying attention to types
 			if c.regs[src].Type() == "string" {
@@ -644,10 +644,10 @@ func (c *CPU) Run() {
 
 		case opcode.PEEK:
 			// register
-			c.ip += 1
+			c.ip++
 			result := int(c.mem[c.ip])
 
-			c.ip += 1
+			c.ip++
 			src := int(c.mem[c.ip])
 
 			// get the address from the src register contents
@@ -655,17 +655,17 @@ func (c *CPU) Run() {
 
 			// store the contents of the given address
 			c.regs[result].SetInt(int(c.mem[addr]))
-			c.ip += 1
+			c.ip++
 
 		case opcode.POKE:
 
 			// register
-			c.ip += 1
+			c.ip++
 			src := int(c.mem[c.ip])
-			c.ip += 1
+			c.ip++
 
 			dst := int(c.mem[c.ip])
-			c.ip += 1
+			c.ip++
 
 			// So the destination will contain an address
 			// put the contents of the source to that.
@@ -676,15 +676,15 @@ func (c *CPU) Run() {
 
 		case opcode.MEMCPY:
 			// register
-			c.ip += 1
+			c.ip++
 			dst := int(c.mem[c.ip])
-			c.ip += 1
+			c.ip++
 
 			src := int(c.mem[c.ip])
-			c.ip += 1
+			c.ip++
 
 			len := int(c.mem[c.ip])
-			c.ip += 1
+			c.ip++
 
 			// get the addresses from the registers
 			srcAddr := c.regs[src].GetInt()
@@ -702,14 +702,14 @@ func (c *CPU) Run() {
 				}
 
 				c.mem[dstAddr] = c.mem[srcAddr]
-				dstAddr += 1
-				srcAddr += 1
-				i += 1
+				dstAddr++
+				srcAddr++
+				i++
 			}
 
 		case opcode.STACK_PUSH:
 			// register
-			c.ip += 1
+			c.ip++
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
@@ -718,14 +718,14 @@ func (c *CPU) Run() {
 				os.Exit(1)
 			}
 
-			c.ip += 1
+			c.ip++
 
 			// Store the value in the register on the stack
 			c.stack.Push(c.regs[reg].GetInt())
 
 		case opcode.STACK_POP:
 			// register
-			c.ip += 1
+			c.ip++
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
@@ -734,7 +734,7 @@ func (c *CPU) Run() {
 				os.Exit(1)
 			}
 
-			c.ip += 1
+			c.ip++
 
 			// Ensure our stack isn't empty
 			if c.stack.Empty() {
@@ -759,7 +759,7 @@ func (c *CPU) Run() {
 			c.ip = addr
 
 		case opcode.STACK_CALL:
-			c.ip += 1
+			c.ip++
 
 			addr := c.read2Val()
 
@@ -770,7 +770,7 @@ func (c *CPU) Run() {
 			c.ip = addr
 
 		case opcode.TRAP_OP:
-			c.ip += 1
+			c.ip++
 
 			num := c.read2Val()
 
@@ -781,7 +781,7 @@ func (c *CPU) Run() {
 		default:
 			fmt.Printf("Unrecognized/Unimplemented opcode %02X at IP %04X\n", op.Value(), c.ip)
 			os.Exit(1)
-			c.ip += 1
+			c.ip++
 		}
 
 		// Ensure our instruction-pointer wraps around.

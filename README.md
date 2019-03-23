@@ -2,8 +2,22 @@
 [![license](https://img.shields.io/github/license/skx/go.vm.svg)](https://github.com/skx/go.vm/blob/master/LICENSE)
 [![Release](https://img.shields.io/github/release/skx/go.vm.svg)](https://github.com/skx/go.vm/releases/latest)
 
-go.vm
------
+* [go.vm](#govm)
+* [Installation](#installation)
+  * [Build without Go Modules (Go before 1.11)](#build-without-go-modules-go-before-111)
+  * [Build with Go Modules (Go 1.11 or higher)](#build-with-go-modules-go-111-or-higher)
+* [Usage](#usage)
+* [Opcodes](#opcodes)
+* [Notes](#notes)
+  * [The compiler](#the-compiler)
+  * [The interpreter](#the-interpreter)
+  * [Changes](#changes)
+  * [DB/DATA Changes](#dbdata-changes)
+  * [Traps](#traps)
+* [Fuzzing](#fuzzing)
+* [Github Setup](#github-setup)
+
+# go.vm
 
 This project is a golang based compiler and interpreter for a simple virtual
 machine.  It is a port of the existing project:
@@ -19,12 +33,26 @@ project, or [the examples](examples/) contained in this repository.
 This particular virtual machine is intentionally simple, but despite that it is hopefully implemented in a readable fashion.  ("Simplicity" here means that we support only a small number of instructions, and the 16-registers the virtual CPU possesses can store strings and integers, but not floating-point values.)
 
 
-# Installation
 
-Install the code via:
 
-    $ go get -u  github.com/skx/go.vm
-    $ go install github.com/skx/go.vm
+## Installation
+
+There are two ways to install this project from source, which depend on the version of the [go](https://golang.org/) version you're using.
+
+If you prefer you can fetch a binary from [our release page](https://github.com/skx/go.vm/releases).  Currently there is only a binary for Linux (amd64) due to the use of `cgo` in our dependencies.
+
+## Build without Go Modules (Go before 1.11)
+
+    go get -u github.com/skx/go.vm
+
+## Build with Go Modules (Go 1.11 or higher)
+
+    git clone https://github.com/skx/go.vm ;# make sure to clone outside of GOPATH
+    cd go.vm
+    go install
+
+
+## Usage
 
 Once installed there are three sub-commands of interest:
 
@@ -48,7 +76,7 @@ Or you can handle both steps at once:
      $ go.vm run examples/hello.in
 
 
-# Opcodes
+## Opcodes
 
 The virtual machine has 16 registers, each of which can store an integer
 or a string.  For example to set the first two registers you might write:
@@ -91,11 +119,11 @@ Further instructions are available and can be viewed beneath [examples/](example
 reading from STDIN - however this _is_ supported via the use of traps, as [documented below](#traps).
 
 
-# Notes
+## Notes
 
 Some brief notes on parts of the code / operation:
 
-## The compiler
+### The compiler
 
 The compiler is built in a traditional fashion:
 
@@ -122,7 +150,7 @@ You can use the `dump` command to see the structure the lexer generates:
      {EXIT exit}
 
 
-## The interpreter
+### The interpreter
 
 The core of the interpreter is located in the file [cpu.go](cpu/cpu.go) and is
 as simple and naive as you would expect.  There are some supporting files
@@ -136,7 +164,7 @@ in the same directory:
   * The implementation of the traps, to be [described below](#traps).
 
 
-## Changes
+### Changes
 
 Compared to [the original project](https://github.com/skx/simple.vm) there are two main changes:
 
@@ -144,7 +172,7 @@ Compared to [the original project](https://github.com/skx/simple.vm) there are t
 * There is a notion of `traps`.
    * Rather than defining opcodes for complex tasks it is now possible to callback into the CPU-emulator to do work.
 
-#### DB/DATA Changes
+### DB/DATA Changes
 
 For example in simple.vm project this is possible:
 
@@ -157,7 +185,7 @@ But this is not:
 
 `go.vm` supports this, and it is demonstrated in [examples/peek-strlen.in](examples/peek-strlen.in).
 
-#### Traps
+### Traps
 
 The instruction `int` can be used to call back to the emulator to do some work
 on behalf of a program.  The following traps are currently defined & available:
