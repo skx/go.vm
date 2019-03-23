@@ -377,7 +377,7 @@ func (c *CPU) Run() {
 				val = 0xFFFF
 			} else {
 				// otherwise decrease normally
-				val -= 1
+				val--
 			}
 
 			// zero?
