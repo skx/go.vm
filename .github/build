@@ -3,9 +3,6 @@
 # The basename of our binary
 BASE="go.vm"
 
-# Get the dependencies
-go mod init
-
 #
 # We build on multiple platforms/archs
 #
