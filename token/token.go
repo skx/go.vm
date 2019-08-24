@@ -1,3 +1,4 @@
+// Package token contains the list of token-types we accept/recognize.
 package token
 
 // Type is a string
