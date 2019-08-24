@@ -3,6 +3,20 @@
 # Install the lint-tool, and the shadow-tool
 go get -u golang.org/x/lint/golint
 go get -u golang.org/x/tools/go/analysis/passes/shadow/cmd/shadow
+go get -u honnef.co/go/tools/cmd/staticcheck
+
+
+# Run the static-check tool - we ignore errors relating to case
+t=$(mktemp)
+staticcheck -checks all ./... | grep -v ALL_CAPS > $t
+if [ -s $t ]; then
+    echo "Found errors via 'staticcheck':"
+    cat $t
+    rm $t
+    exit 1
+fi
+rm $t
+
 
 # At this point failures cause aborts
 set -e
