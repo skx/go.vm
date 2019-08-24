@@ -1,11 +1,9 @@
-//
-// This is a simple port of the virtual machine interpreter to golang.
+// Package cpu contains the CPU for our virtual machine interpreter.
 //
 // We should probably use the constants defined in `opcodes/opcodes.go`
 // instead of the literal hex-constants for our bytecode, but that's a minor
 // issue.
 //
-
 package cpu
 
 import (
@@ -160,7 +158,7 @@ func (c *CPU) Run() {
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
-			if reg < 0 || reg > len(c.regs) {
+			if reg > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -175,7 +173,7 @@ func (c *CPU) Run() {
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if reg < 0 || int(reg) > len(c.regs) {
+			if int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -194,7 +192,7 @@ func (c *CPU) Run() {
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if reg < 0 || int(reg) > len(c.regs) {
+			if int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -214,7 +212,7 @@ func (c *CPU) Run() {
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if reg < 0 || int(reg) > len(c.regs) {
+			if int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -333,7 +331,7 @@ func (c *CPU) Run() {
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if reg < 0 || int(reg) > len(c.regs) {
+			if int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -364,7 +362,7 @@ func (c *CPU) Run() {
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if reg < 0 || int(reg) > len(c.regs) {
+			if int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -422,7 +420,7 @@ func (c *CPU) Run() {
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if reg < 0 || int(reg) > len(c.regs) {
+			if int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -442,7 +440,7 @@ func (c *CPU) Run() {
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if reg < 0 || int(reg) > len(c.regs) {
+			if int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -500,7 +498,7 @@ func (c *CPU) Run() {
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if reg < 0 || int(reg) > len(c.regs) {
+			if int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -545,7 +543,7 @@ func (c *CPU) Run() {
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
-			if reg < 0 || int(reg) > len(c.regs) {
+			if int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -565,7 +563,7 @@ func (c *CPU) Run() {
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
-			if reg < 0 || int(reg) > len(c.regs) {
+			if int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -587,7 +585,7 @@ func (c *CPU) Run() {
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
-			if reg < 0 || int(reg) > len(c.regs) {
+			if int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -606,7 +604,7 @@ func (c *CPU) Run() {
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
-			if reg < 0 || int(reg) > len(c.regs) {
+			if int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -713,7 +711,7 @@ func (c *CPU) Run() {
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
-			if reg < 0 || int(reg) > len(c.regs) {
+			if int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}
@@ -729,7 +727,7 @@ func (c *CPU) Run() {
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
-			if reg < 0 || int(reg) > len(c.regs) {
+			if int(reg) > len(c.regs) {
 				fmt.Printf("Register %d out of range\n", reg)
 				os.Exit(1)
 			}

@@ -1,3 +1,4 @@
+// Package lexer contains our lexer.
 package lexer
 
 import (

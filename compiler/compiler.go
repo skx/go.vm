@@ -1,5 +1,4 @@
-//
-// This is the "compiler" for our simple virtual machine.
+// Package compiler contains the "compiler" for our simple virtual machine.
 //
 // It reads the string of tokens from the lexer, and outputs the bytecode
 // which is equivalent.
@@ -15,7 +14,6 @@
 // label, and the latter lets us record the offset at which labels were seen.
 //
 //
-
 package compiler
 
 import (
@@ -60,10 +58,7 @@ func (p *Compiler) nextToken() {
 
 // isRegister returns true if the given string has a register ID
 func (p *Compiler) isRegister(input string) bool {
-	if strings.HasPrefix(input, "#") {
-		return true
-	}
-	return false
+	return (strings.HasPrefix(input, "#"))
 }
 
 // getRegister converts a register string "#2" to an integer 2.
@@ -848,11 +843,6 @@ func (p *Compiler) printString() {
 
 	p.bytecode = append(p.bytecode, byte(opcode.STRING_PRINT))
 	p.bytecode = append(p.bytecode, p.getRegister(p.curToken.Literal))
-}
-
-// determinate current token is t or not.
-func (p *Compiler) curTokenIs(t token.Type) bool {
-	return p.curToken.Type == t
 }
 
 // determinate next token is t or not

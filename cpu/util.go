@@ -18,8 +18,7 @@ func debugPrintf(format string, args ...interface{}) {
 	if os.Getenv("DEBUG") == "" {
 		return
 	}
-	prefix := fmt.Sprintf("%s", format)
-	fmt.Printf(prefix, args...)
+	fmt.Printf(format, args...)
 }
 
 // Split a line of text into tokens, but keep anything "quoted"

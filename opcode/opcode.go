@@ -1,3 +1,4 @@
+// Package opcode defines our opcode to integer mapping.
 package opcode
 
 var (
