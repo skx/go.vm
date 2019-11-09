@@ -23,14 +23,13 @@ This project is a golang based compiler and interpreter for a simple virtual
 machine.  It is a port of the existing project:
 
 * https://github.com/skx/simple.vm
-
-(The original project has a perl based compiler/decompiler and an interpreter
-written in C.)
+  * The original project has a perl based compiler/decompiler.
+  * The original interpreter was written in C.
 
 You can get a feel for what it looks like by referring to either the parent
 project, or [the examples](examples/) contained in this repository.
 
-This particular virtual machine is intentionally simple, but despite that it is hopefully implemented in a readable fashion.  ("Simplicity" here means that we support only a small number of instructions, and the 16-registers the virtual CPU possesses can store strings and integers, but not floating-point values.)
+This particular virtual machine is intentionally simple, but despite that it is hopefully implemented in a readable fashion.  "Simplicity" here means that we support only a small number of instructions, and the 16-registers the virtual CPU possesses can store strings and integers, but not floating-point values.
 
 If you want to see a __real__ virtual machine, interpreting a scripting language, which you can embed inside your Golang applications:
 
