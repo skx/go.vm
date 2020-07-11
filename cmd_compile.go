@@ -20,7 +20,7 @@ type compileCmd struct {
 // Glue
 //
 func (*compileCmd) Name() string     { return "compile" }
-func (*compileCmd) Synopsis() string { return "Compiled a simple.vm program." }
+func (*compileCmd) Synopsis() string { return "Compile a simple.vm program." }
 func (*compileCmd) Usage() string {
 	return `compile :
   Compile the given input file to a series of bytecodes.
