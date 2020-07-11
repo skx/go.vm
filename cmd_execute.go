@@ -16,7 +16,7 @@ type executeCmd struct {
 // Glue
 //
 func (*executeCmd) Name() string     { return "execute" }
-func (*executeCmd) Synopsis() string { return "Executed a simple.vm program." }
+func (*executeCmd) Synopsis() string { return "Executed a compiled program." }
 func (*executeCmd) Usage() string {
 	return `execute :
   Execute the bytecodes contained in the given input file.

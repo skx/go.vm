@@ -18,7 +18,7 @@ type dumpCmd struct {
 // Glue
 //
 func (*dumpCmd) Name() string     { return "dump" }
-func (*dumpCmd) Synopsis() string { return "Dump a simple.vm program." }
+func (*dumpCmd) Synopsis() string { return "Show the lexed output of the given program." }
 func (*dumpCmd) Usage() string {
 	return `dump :
   Demonstrate how our lexer performed by dumping the given input file, as a
