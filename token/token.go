@@ -33,7 +33,6 @@ const (
 
 	// control-flow
 	CALL  = "CALL"
-	GOTO  = "GOTO"
 	JMP   = "JMP"
 	JMPNZ = "JMPNZ"
 	JMPZ  = "JMPZ"
@@ -107,7 +106,6 @@ var keywords = map[string]Type{
 
 	// control-flow
 	"call":  CALL,
-	"goto":  GOTO,
 	"jmp":   JMP,
 	"jmpnz": JMPNZ,
 	"jmpz":  JMPZ,

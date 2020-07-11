@@ -153,9 +153,6 @@ func (p *Compiler) Compile() {
 		case token.DATA:
 			p.dataOp()
 
-		case token.GOTO:
-			p.jumpOp(opcode.JUMP_TO)
-
 		case token.TRAP:
 			p.trapOp()
 
