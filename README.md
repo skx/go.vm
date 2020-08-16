@@ -15,6 +15,7 @@
   * [DB/DATA Changes](#dbdata-changes)
   * [Traps](#traps)
 * [Fuzzing](#fuzzing)
+* [See-Also](#see-also)
 * [Github Setup](#github-setup)
 
 # go.vm
@@ -230,6 +231,26 @@ Interesting results will appear in `workdir/crashers/` some crashes will be inva
      $ cat workdir/crashers/92108737efbd0ac6b42ae4473db5a257314b36cf.output
      Register 99 out of range
      exit status 1
+
+
+# See-Also
+
+The original virtual-machine compiler and interpreter is available from the following repository:
+
+* https://github.com/skx/simple.vm
+
+In addition to that you can find a _real_ virtual-machine inside the embedded scripting engine I wrote, also for golang.  In that case a scripting language is parsed and converted into a series of bytecode instructions, which are executed by a virtual machine.  Similar to this project, but the bytecode operations are more complex and high-level:
+
+* https://github.com/skx/evalfilter
+
+If you're interested in compilers, and interpreters, generally you might enjoy these other projects too:
+
+* https://github.com/skx/gobasic
+  * A simple BASIC interpreter
+* https://github.com/skx/bfcc
+  * A [brainfuck](https://en.wikipedia.org/wiki/Brainfuck) compiler
+* https://github.com/skx/math-compiler
+  * A simple compiler for mathematical expressions.
 
 
 ## Github Setup
