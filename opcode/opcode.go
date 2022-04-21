@@ -26,19 +26,19 @@ var (
 	// JUMP_NZ jumps if the Z-flag is NOT set.
 	JUMP_NZ = 0x12
 
-	// XOR_OP performs an XOR operation against to registers.
+	// XOR_OP performs an XOR operation against two registers.
 	XOR_OP = 0x20
 
-	// ADD_OP performs an ADD operation against to registers.
+	// ADD_OP performs an ADD operation against two registers.
 	ADD_OP = 0x21
 
-	// SUB_OP performs an MINUS operation against to registers.
+	// SUB_OP performs an MINUS operation against two registers.
 	SUB_OP = 0x22
 
-	// MUL_OP performs a MULTIPLY operation against to registers.
+	// MUL_OP performs a MULTIPLY operation against two registers.
 	MUL_OP = 0x23
 
-	// DIV_OP performs a DIVIDE operation against to registers.
+	// DIV_OP performs a DIVIDE operation against two registers.
 	DIV_OP = 0x24
 
 	// INC_OP increments the given register by one.
@@ -47,10 +47,10 @@ var (
 	// DEC_OP decrements the given register by one.
 	DEC_OP = 0x26
 
-	// AND_OP performs a logical AND operation against to registers.
+	// AND_OP performs a logical AND operation against two registers.
 	AND_OP = 0x27
 
-	// OR_OP performs a logical OR operation against to registers.
+	// OR_OP performs a logical OR operation against two registers.
 	OR_OP = 0x28
 
 	// STRING_STORE stores a string in a register.
