@@ -17,7 +17,7 @@
 
         store #1, "Steve Kemp\n"
         print_str #1
-        goto number
+        jmp number
 
         # padding here - just for amusement.
         nop
@@ -36,4 +36,4 @@
         store #1, "\n"
         print_str #1
 
-        goto kirsi
+        jmp kirsi

@@ -30,4 +30,4 @@
         #
         # Jump to that new code.
         #
-        goto 0x5000
+        jmp 0x5000
