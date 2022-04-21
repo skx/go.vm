@@ -8,6 +8,7 @@ package cpu
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io/ioutil"
 	"math/rand"
@@ -41,6 +42,9 @@ type CPU struct {
 
 	// stack
 	stack *Stack
+
+	// context is used by callers to implement timeouts.
+	context context.Context
 }
 
 //
@@ -49,9 +53,17 @@ type CPU struct {
 
 // NewCPU returns a new CPU object.
 func NewCPU() *CPU {
-	x := &CPU{}
+	x := &CPU{context: context.Background()}
 	x.Reset()
 	return x
+}
+
+// SetContext allows a context to be used as our virtual machine is
+// running. This is most used to allow our caller to setup a
+// timeout/deadline which will avoid denial-of-service problems if
+// user-supplied script(s) contain infinite loops.
+func (c *CPU) SetContext(ctx context.Context) {
+	c.context = ctx
 }
 
 // Reset sets the CPU into a known-good state, by setting the IP to zero,
@@ -147,6 +159,20 @@ func (c *CPU) Run() error {
 		op := opcode.NewOpcode(c.mem[c.ip])
 		debugPrintf("%04X %02X [%s]\n", c.ip, op.Value(), op.String())
 
+		//
+		// We've been given a context, which we'll test at every
+		// iteration of our main-loop.
+		//
+		// This is a little slow and inefficient, but we need
+		// to allow our execution to be time-limited.
+		//
+		select {
+		case <-c.context.Done():
+			return fmt.Errorf("timeout during execution")
+		default:
+			// nop
+		}
+
 		switch int(op.Value()) {
 		case opcode.EXIT:
 			run = false
@@ -157,7 +183,7 @@ func (c *CPU) Run() error {
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
-			if reg > len(c.regs) {
+			if reg >= len(c.regs) {
 				return fmt.Errorf("register %d out of range", reg)
 			}
 
@@ -171,7 +197,7 @@ func (c *CPU) Run() error {
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if int(reg) > len(c.regs) {
+			if int(reg) >= len(c.regs) {
 				return fmt.Errorf("register %d out of range", reg)
 			}
 
@@ -192,7 +218,7 @@ func (c *CPU) Run() error {
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if int(reg) > len(c.regs) {
+			if int(reg) >= len(c.regs) {
 				return fmt.Errorf("register %d out of range", reg)
 			}
 
@@ -214,7 +240,7 @@ func (c *CPU) Run() error {
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if int(reg) > len(c.regs) {
+			if int(reg) >= len(c.regs) {
 				return fmt.Errorf("register %d out of range", reg)
 			}
 
@@ -254,6 +280,16 @@ func (c *CPU) Run() error {
 			b := c.mem[c.ip]
 			c.ip++
 
+			if int(a) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", a)
+			}
+			if int(b) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", b)
+			}
+			if int(res) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", res)
+			}
+
 			// store result
 			aVal, aErr := c.regs[a].GetInt()
 			if aErr != nil {
@@ -274,6 +310,16 @@ func (c *CPU) Run() error {
 			b := c.mem[c.ip]
 			c.ip++
 
+			if int(a) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", a)
+			}
+			if int(b) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", b)
+			}
+			if int(res) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", res)
+			}
+
 			// store result
 			aVal, aErr := c.regs[a].GetInt()
 			if aErr != nil {
@@ -293,6 +339,16 @@ func (c *CPU) Run() error {
 			c.ip++
 			b := c.mem[c.ip]
 			c.ip++
+
+			if int(a) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", a)
+			}
+			if int(b) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", b)
+			}
+			if int(res) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", res)
+			}
 
 			// store result
 			aVal, aErr := c.regs[a].GetInt()
@@ -323,6 +379,16 @@ func (c *CPU) Run() error {
 			b := c.mem[c.ip]
 			c.ip++
 
+			if int(a) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", a)
+			}
+			if int(b) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", b)
+			}
+			if int(res) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", res)
+			}
+
 			// store result
 			aVal, aErr := c.regs[a].GetInt()
 			if aErr != nil {
@@ -342,6 +408,16 @@ func (c *CPU) Run() error {
 			c.ip++
 			b := c.mem[c.ip]
 			c.ip++
+
+			if int(a) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", a)
+			}
+			if int(b) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", b)
+			}
+			if int(res) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", res)
+			}
 
 			// store result
 			aVal, aErr := c.regs[a].GetInt()
@@ -365,7 +441,7 @@ func (c *CPU) Run() error {
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if int(reg) > len(c.regs) {
+			if int(reg) >= len(c.regs) {
 				return fmt.Errorf("register %d out of range", reg)
 			}
 
@@ -398,7 +474,7 @@ func (c *CPU) Run() error {
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if int(reg) > len(c.regs) {
+			if int(reg) >= len(c.regs) {
 				return fmt.Errorf("register %d out of range", reg)
 			}
 
@@ -433,6 +509,16 @@ func (c *CPU) Run() error {
 			b := c.mem[c.ip]
 			c.ip++
 
+			if int(a) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", a)
+			}
+			if int(b) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", b)
+			}
+			if int(res) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", res)
+			}
+
 			// store result
 			aVal, aErr := c.regs[a].GetInt()
 			if aErr != nil {
@@ -453,6 +539,16 @@ func (c *CPU) Run() error {
 			b := c.mem[c.ip]
 			c.ip++
 
+			if int(a) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", a)
+			}
+			if int(b) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", b)
+			}
+			if int(res) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", res)
+			}
+
 			// store result
 			aVal, aErr := c.regs[a].GetInt()
 			if aErr != nil {
@@ -470,7 +566,7 @@ func (c *CPU) Run() error {
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if int(reg) > len(c.regs) {
+			if int(reg) >= len(c.regs) {
 				return fmt.Errorf("register %d out of range", reg)
 			}
 
@@ -489,7 +585,7 @@ func (c *CPU) Run() error {
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if int(reg) > len(c.regs) {
+			if int(reg) >= len(c.regs) {
 				return fmt.Errorf("register %d out of range", reg)
 			}
 
@@ -509,11 +605,28 @@ func (c *CPU) Run() error {
 			c.ip++
 			a := c.mem[c.ip]
 
+			if int(a) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", a)
+			}
+
 			// src2
 			c.ip++
 			b := c.mem[c.ip]
+			if int(b) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", b)
+			}
 
 			c.ip++
+
+			if int(a) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", a)
+			}
+			if int(b) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", b)
+			}
+			if int(res) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", res)
+			}
 
 			aVal, aErr := c.regs[a].GetString()
 			if aErr != nil {
@@ -532,38 +645,44 @@ func (c *CPU) Run() error {
 			r := c.mem[c.ip]
 			c.ip++
 
+			if int(r) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", r)
+			}
+
 			str, sErr := c.regs[r].GetString()
 			if sErr != nil {
 				return sErr
 			}
-			// run the command
-			toExec := splitCommand(str)
-			cmd := exec.Command(toExec[0], toExec[1:]...)
 
-			var out bytes.Buffer
-			var err bytes.Buffer
-			cmd.Stdout = &out
-			cmd.Stderr = &err
-			er := cmd.Run()
-			if er != nil {
-				return fmt.Errorf("error invoking system(%s): %s", str, er)
+			if false {
+				// run the command
+				toExec := splitCommand(str)
+				cmd := exec.Command(toExec[0], toExec[1:]...)
+
+				var out bytes.Buffer
+				var err bytes.Buffer
+				cmd.Stdout = &out
+				cmd.Stderr = &err
+				er := cmd.Run()
+				if er != nil {
+					return fmt.Errorf("error invoking system(%s): %s", str, er)
+				}
+
+				// stdout
+				fmt.Printf("%s", out.String())
+
+				// stderr - if non-empty
+				if len(err.String()) > 0 {
+					fmt.Printf("%s", err.String())
+				}
 			}
-
-			// stdout
-			fmt.Printf("%s", out.String())
-
-			// stderr - if non-empty
-			if len(err.String()) > 0 {
-				fmt.Printf("%s", err.String())
-			}
-
 		case opcode.STRING_TOINT:
 			// register
 			c.ip++
 			reg := c.mem[c.ip]
 
 			// bounds-check our register
-			if int(reg) > len(c.regs) {
+			if int(reg) >= len(c.regs) {
 				return fmt.Errorf("register %d out of range", reg)
 			}
 
@@ -589,6 +708,13 @@ func (c *CPU) Run() error {
 			c.ip++
 			r2 := int(c.mem[c.ip])
 			c.ip++
+
+			if int(r1) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", r1)
+			}
+			if int(r2) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", r2)
+			}
 
 			c.flags.z = false
 
@@ -629,7 +755,7 @@ func (c *CPU) Run() error {
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
-			if int(reg) > len(c.regs) {
+			if int(reg) >= len(c.regs) {
 				return fmt.Errorf("register %d out of range", reg)
 			}
 
@@ -654,7 +780,7 @@ func (c *CPU) Run() error {
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
-			if int(reg) > len(c.regs) {
+			if int(reg) >= len(c.regs) {
 				return fmt.Errorf("register %d out of range", reg)
 			}
 
@@ -681,7 +807,7 @@ func (c *CPU) Run() error {
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
-			if int(reg) > len(c.regs) {
+			if int(reg) >= len(c.regs) {
 				return fmt.Errorf("register %d out of range", reg)
 			}
 
@@ -699,7 +825,7 @@ func (c *CPU) Run() error {
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
-			if int(reg) > len(c.regs) {
+			if int(reg) >= len(c.regs) {
 				return fmt.Errorf("register %d out of range", reg)
 			}
 
@@ -723,6 +849,13 @@ func (c *CPU) Run() error {
 			// register
 			src := int(c.mem[c.ip])
 			c.ip++
+
+			if int(src) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", src)
+			}
+			if int(dst) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", dst)
+			}
 
 			// Copy the register - paying attention to types
 			if c.regs[src].Type() == "string" {
@@ -751,6 +884,13 @@ func (c *CPU) Run() error {
 			c.ip++
 			src := int(c.mem[c.ip])
 
+			if int(src) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", src)
+			}
+			if int(result) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", result)
+			}
+
 			// get the address from the src register contents
 			addr, err := c.regs[src].GetInt()
 			if err != nil {
@@ -770,6 +910,13 @@ func (c *CPU) Run() error {
 
 			dst := int(c.mem[c.ip])
 			c.ip++
+
+			if int(src) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", src)
+			}
+			if int(dst) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", dst)
+			}
 
 			// So the destination will contain an address
 			// put the contents of the source to that.
@@ -794,8 +941,18 @@ func (c *CPU) Run() error {
 			src := int(c.mem[c.ip])
 			c.ip++
 
-			len := int(c.mem[c.ip])
+			ln := int(c.mem[c.ip])
 			c.ip++
+
+			if int(src) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", src)
+			}
+			if int(dst) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", dst)
+			}
+			if int(ln) >= len(c.regs) {
+				return fmt.Errorf("register %d out of range", ln)
+			}
 
 			// get the addresses from the registers
 			srcAddr, sErr := c.regs[src].GetInt()
@@ -806,7 +963,7 @@ func (c *CPU) Run() error {
 			if dErr != nil {
 				return dErr
 			}
-			length, lErr := c.regs[len].GetInt()
+			length, lErr := c.regs[ln].GetInt()
 			if lErr != nil {
 				return lErr
 			}
@@ -833,7 +990,7 @@ func (c *CPU) Run() error {
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
-			if int(reg) > len(c.regs) {
+			if int(reg) >= len(c.regs) {
 				return fmt.Errorf("register %d out of range", reg)
 			}
 
@@ -852,7 +1009,7 @@ func (c *CPU) Run() error {
 			reg := int(c.mem[c.ip])
 
 			// bounds-check our register
-			if int(reg) > len(c.regs) {
+			if int(reg) >= len(c.regs) {
 				return fmt.Errorf("register %d out of range", reg)
 			}
 
@@ -860,8 +1017,7 @@ func (c *CPU) Run() error {
 
 			// Ensure our stack isn't empty
 			if c.stack.Empty() {
-				fmt.Printf("Stack Underflow!\n")
-				os.Exit(1)
+				return fmt.Errorf("stackunderflow!")
 			}
 			// Store the value in the register on the stack
 			val, _ := c.stack.Pop()
@@ -870,8 +1026,7 @@ func (c *CPU) Run() error {
 		case opcode.STACK_RET:
 			// Ensure our stack isn't empty
 			if c.stack.Empty() {
-				fmt.Printf("Stack Underflow!\n")
-				os.Exit(1)
+				return fmt.Errorf("stackunderflow!")
 			}
 
 			// Get the address
@@ -895,6 +1050,10 @@ func (c *CPU) Run() error {
 			c.ip++
 
 			num := c.read2Val()
+
+			if num < 0 || num >= 0xffff {
+				return fmt.Errorf("invalid trap number %d", num)
+			}
 
 			fn := TRAPS[num]
 			if fn != nil {
