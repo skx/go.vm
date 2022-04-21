@@ -10,7 +10,12 @@ func TestNewRegister(t *testing.T) {
 	if r.Type() != "int" {
 		t.Errorf("New register is not an int")
 	}
-	if r.GetInt() != 0 {
+
+	val, err := r.GetInt()
+	if err != nil {
+		t.Errorf("failed to get value")
+	}
+	if val != 0 {
 		t.Errorf("New register contains a value!")
 	}
 }
@@ -23,7 +28,11 @@ func TestRegisterInt(t *testing.T) {
 	if r.Type() != "int" {
 		t.Errorf("register is not an int")
 	}
-	if r.GetInt() != 0xffff {
+	val, err := r.GetInt()
+	if err != nil {
+		t.Errorf("failed to get value")
+	}
+	if val != 0xffff {
 		t.Errorf("register contains the wrong value!")
 	}
 }
@@ -36,7 +45,12 @@ func TestRegisterString(t *testing.T) {
 	if r.Type() != "string" {
 		t.Errorf("register is not a string")
 	}
-	if r.GetString() != "Hello, world!" {
+
+	val, err := r.GetString()
+	if err != nil {
+		t.Errorf("error getting string")
+	}
+	if val != "Hello, world!" {
 		t.Errorf("register contains the wrong value!")
 	}
 }
@@ -67,8 +81,14 @@ func TestIntBounds(t *testing.T) {
 		if r.Type() != "int" {
 			t.Errorf("register is not an int")
 		}
-		if r.GetInt() != test.get {
-			t.Errorf("register contains the wrong value: 0x%04X != 0x%04X", r.GetInt(), test.get)
+
+		val, err := r.GetInt()
+		if err != nil {
+			t.Errorf("failed to get value")
+		}
+
+		if val != test.get {
+			t.Errorf("register contains the wrong value: 0x%04X != 0x%04X", val, test.get)
 		}
 	}
 }
