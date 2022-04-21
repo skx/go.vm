@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// FuzzEvaluator runs the fuzz-testing against our evaluation engine
+// FuzzCPU runs the fuzz-testing against our virtual CPU
 func FuzzCPU(f *testing.F) {
 
 	// empty + whitespace
