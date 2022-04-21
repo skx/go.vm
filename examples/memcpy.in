@@ -13,7 +13,7 @@
 #  $ go.vm execute ./memcpy.raw
 #
 
-        goto run
+        jmp run
     :code
 
         #
@@ -50,4 +50,4 @@
         memcpy #1, #2, #3
 
         # Jump to the copied code.
-        goto 0x5000
+        jmp 0x5000

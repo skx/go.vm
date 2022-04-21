@@ -38,10 +38,15 @@ func (p *executeCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{
 	// For each file on the command-line we can now execute it.
 	//
 	for _, file := range f.Args() {
-		fmt.Printf("Loading file: %s\n", file)
+
 		c := cpu.NewCPU()
-		c.LoadFile(file)
-		err := c.Run()
+
+		err := c.LoadFile(file)
+		if err != nil {
+			fmt.Printf("Error loading file: %s\n", err)
+		}
+
+		err = c.Run()
 		if err != nil {
 			fmt.Printf("Error running file: %s\n", err)
 			return subcommands.ExitFailure

@@ -3,7 +3,6 @@ package cpu
 
 import (
 	"fmt"
-	"os"
 )
 
 // Object is the interface for something we store in a register.
@@ -45,16 +44,12 @@ func NewRegister() *Register {
 
 // GetInt retrieves the integer content of the given register.
 // If the register does not contain an integer that is a fatal error.
-func (r *Register) GetInt() int {
+func (r *Register) GetInt() (int, error) {
 	switch arg := r.o.(type) {
 	case *IntegerObject:
-		return arg.Value
-	default:
-		fmt.Printf("BUG: Attempting to call GetInt on a register holding a non-integer value: %v\n", r.o)
-		os.Exit(3)
+		return arg.Value, nil
 	}
-	// Not reached
-	return 0
+	return 0, fmt.Errorf("attempting to call GetInt on a register holding a non-integer value: %v", r.o)
 }
 
 // SetInt stores the given integer in the register.
@@ -71,17 +66,13 @@ func (r *Register) SetInt(v int) {
 
 // GetString retrieves the string content of the given register.
 // If the register does not contain a string that is a fatal error.
-func (r *Register) GetString() string {
+func (r *Register) GetString() (string, error) {
 	switch arg := r.o.(type) {
 	case *StringObject:
-		return arg.Value
-	default:
-		fmt.Printf("BUG: Attempting to call GetString on a register holding a non-string value: %v\n", r.o)
-		os.Exit(3)
+		return arg.Value, nil
 	}
 
-	// Not reached
-	return ""
+	return "", fmt.Errorf("attempting to call GetString on a register holding a non-string value: %v", r.o)
 }
 
 // SetString stores the supplied string in the register.

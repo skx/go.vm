@@ -17,7 +17,7 @@ import (
 // TrapFunction is the signature for a function that is available
 // as a trap.
 //
-type TrapFunction func(c *CPU, num int)
+type TrapFunction func(c *CPU, num int) error
 
 //
 // TRAPS is an array of our trap-functions.
@@ -35,9 +35,8 @@ var reader *bufio.Reader
 
 // TrapNOP is the default trap-function for any trap IDs that haven't
 // explicitly been setup.
-func TrapNOP(c *CPU, num int) {
-	fmt.Printf("Trap function not defined: 0x%04X\n", num)
-	os.Exit(1)
+func TrapNOP(c *CPU, num int) error {
+	return fmt.Errorf("Trap function not defined: 0x%04X\n", num)
 }
 
 // StrLenTrap returns the length of a string.
@@ -47,9 +46,13 @@ func TrapNOP(c *CPU, num int) {
 // Output:
 //   Sets register 0 with the length
 //
-func StrLenTrap(c *CPU, num int) {
-	str := c.regs[0].GetString()
+func StrLenTrap(c *CPU, num int) error {
+	str, err := c.regs[0].GetString()
+	if err != nil {
+		return err
+	}
 	c.regs[0].SetInt(len(str))
+	return nil
 }
 
 // ReadStringTrap reads a string from the console
@@ -59,9 +62,13 @@ func StrLenTrap(c *CPU, num int) {
 // Ouptut:
 //   Sets register 0 with the user-provided string
 //
-func ReadStringTrap(c *CPU, num int) {
-	text, _ := reader.ReadString('\n')
+func ReadStringTrap(c *CPU, num int) error {
+	text, err := reader.ReadString('\n')
+	if err != nil {
+		return err
+	}
 	c.regs[0].SetString(text)
+	return nil
 }
 
 // RemoveNewLineTrap removes any trailing newline from the string in #0
@@ -71,9 +78,13 @@ func ReadStringTrap(c *CPU, num int) {
 // Output:
 //   Sets register #0 with the updated string
 //
-func RemoveNewLineTrap(c *CPU, num int) {
-	str := c.regs[0].GetString()
+func RemoveNewLineTrap(c *CPU, num int) error {
+	str, err := c.regs[0].GetString()
+	if err != nil {
+		return err
+	}
 	c.regs[0].SetString(strings.TrimSpace(str))
+	return nil
 }
 
 // init configures our registered traps.
