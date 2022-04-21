@@ -41,7 +41,11 @@ func (p *executeCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{
 		fmt.Printf("Loading file: %s\n", file)
 		c := cpu.NewCPU()
 		c.LoadFile(file)
-		c.Run()
+		err := c.Run()
+		if err != nil {
+			fmt.Printf("Error running file: %s\n", err)
+			return subcommands.ExitFailure
+		}
 	}
 	return subcommands.ExitSuccess
 }

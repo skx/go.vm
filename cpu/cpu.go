@@ -141,7 +141,7 @@ func (c *CPU) read2Val() int {
 
 // Run launches our intepreter.
 // It does not terminate until an `EXIT` instruction is hit.
-func (c *CPU) Run() {
+func (c *CPU) Run() error {
 	run := true
 	for run {
 
@@ -482,7 +482,10 @@ func (c *CPU) Run() {
 			var err bytes.Buffer
 			cmd.Stdout = &out
 			cmd.Stderr = &err
-			cmd.Run()
+			er := cmd.Run()
+			if er != nil {
+				return fmt.Errorf("error invoking system(%s): %s", c.regs[r].GetString(), er)
+			}
 
 			// stdout
 			fmt.Printf("%s", out.String())
@@ -787,4 +790,6 @@ func (c *CPU) Run() {
 			c.ip = 0
 		}
 	}
+
+	return nil
 }

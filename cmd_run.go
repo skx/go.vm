@@ -65,7 +65,11 @@ func (p *runCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) s
 		c.LoadBytes(e.Output())
 
 		// Run the machine
-		c.Run()
+		err = c.Run()
+		if err != nil {
+			fmt.Printf("Error running file: %s\n", err)
+			return subcommands.ExitFailure
+		}
 	}
 	return subcommands.ExitSuccess
 }
