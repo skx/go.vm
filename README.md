@@ -212,7 +212,7 @@ of running a program with numerous random inputs and waiting for it to die.
 The CPU in this repository has been fuzzed repeatedly, using the new native fuzz-testing available within go 1.18+.  To run tests:
 
 ```sh
-cd cpu
+$ cd cpu
 $ go test  -parallel=1 -fuzz=FuzzCPU -v
 ..
 === FUZZ  FuzzCPU
