@@ -122,19 +122,34 @@ func (c *CPU) LoadBytes(data []byte) {
 
 // Read a string from the IP position
 // Strings are prefixed by their lengths (two-bytes).
-func (c *CPU) readString() string {
+func (c *CPU) readString() (string, error) {
+
 	// Read the length of the string we expect
 	len := c.read2Val()
+
+	// Can't read beyond RAM, but we will allow wrap-around.
+	if len >= 0xffff {
+		return "", fmt.Errorf("string too large")
+	}
+
+	addr := c.ip
 
 	// Now build up the body of the string
 	s := ""
 	for i := 0; i < len; i++ {
-		s += string(c.mem[c.ip+i])
+
+		tmp := addr + i
+
+		// wrap around
+		if tmp == 0xFFFF {
+			tmp = 0
+		}
+		s += string(c.mem[tmp])
 	}
 
 	// Jump the IP over the length of the string.
 	c.ip += (len)
-	return s
+	return s, nil
 }
 
 // Read a two-byte number from the current IP.
@@ -578,7 +593,10 @@ func (c *CPU) Run() error {
 			c.ip++
 
 			// read it
-			str := c.readString()
+			str, err := c.readString()
+			if err != nil {
+				return err
+			}
 
 			// store the string
 			c.regs[reg].SetString(str)
@@ -791,7 +809,10 @@ func (c *CPU) Run() error {
 			c.ip++
 
 			// read it
-			str := c.readString()
+			str, err := c.readString()
+			if err != nil {
+				return err
+			}
 
 			if c.regs[reg].Type() == "string" {
 				val, err := c.regs[reg].GetString()
