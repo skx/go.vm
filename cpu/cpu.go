@@ -922,6 +922,10 @@ func (c *CPU) Run() error {
 				return err
 			}
 
+			if addr >= 0xFFFF {
+				return fmt.Errorf("address out of range %d", addr)
+			}
+
 			// store the contents of the given address
 			c.regs[result].SetInt(int(c.mem[addr]))
 			c.ip++
@@ -948,6 +952,10 @@ func (c *CPU) Run() error {
 			addr, err := c.regs[dst].GetInt()
 			if err != nil {
 				return err
+			}
+
+			if addr >= 0xFFFF {
+				return fmt.Errorf("address out of range %d", addr)
 			}
 
 			val, err2 := c.regs[src].GetInt()
