@@ -31,6 +31,9 @@ func FuzzCPU(f *testing.F) {
 		"too large",
 		"Trap function not defined:",
 		"invalid trap ",
+		"EOF",
+		"write beyond RAM",
+		"reading beyond RAM",
 	}
 	f.Fuzz(func(t *testing.T, input []byte) {
 

@@ -156,6 +156,10 @@ func (c *CPU) Run() error {
 	run := true
 	for run {
 
+		if c.ip >= 0xffff {
+			return fmt.Errorf("reading beyond RAM")
+		}
+
 		op := opcode.NewOpcode(c.mem[c.ip])
 		debugPrintf("%04X %02X [%s]\n", c.ip, op.Value(), op.String())
 
@@ -930,6 +934,9 @@ func (c *CPU) Run() error {
 				return err2
 			}
 
+			if addr >= 0xffff {
+				return fmt.Errorf("attempting to write beyond RAM")
+			}
 			c.mem[addr] = byte(val)
 
 		case opcode.MEMCPY:
