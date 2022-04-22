@@ -30,10 +30,12 @@ func TestNextTokenTrivial(t *testing.T) {
 
 func TestNextTokenReal(t *testing.T) {
 	input := `
-        store #1, 10
-        store #2, 20
+        store #1, 0x0a
+        store #2, 0xFF
         add #0, #1, #2
         print_int #0
+        store #1, "steve"
+        print_str #1
 `
 	tests := []struct {
 		expectedType    token.Type
@@ -42,12 +44,12 @@ func TestNextTokenReal(t *testing.T) {
 		{token.STORE, "store"},
 		{token.IDENT, "#1"},
 		{token.COMMA, ","},
-		{token.INT, "10"},
+		{token.INT, "0x0a"},
 
 		{token.STORE, "store"},
 		{token.IDENT, "#2"},
 		{token.COMMA, ","},
-		{token.INT, "20"},
+		{token.INT, "0xFF"},
 
 		{token.ADD, "add"},
 		{token.IDENT, "#0"},
@@ -58,6 +60,13 @@ func TestNextTokenReal(t *testing.T) {
 
 		{token.PRINT_INT, "print_int"},
 		{token.IDENT, "#0"},
+
+		{token.STORE, "store"},
+		{token.IDENT, "#1"},
+		{token.COMMA, ","},
+		{token.STRING, "steve"},
+		{token.PRINT_STR, "print_str"},
+		{token.IDENT, "#1"},
 
 		{token.EOF, ""},
 	}
@@ -101,6 +110,50 @@ print_int #21
 		{token.IDENT, "#3"},
 		{token.PRINT_INT, "print_int"},
 		{token.IDENT, "#21"},
+		{token.EOF, ""},
+	}
+	l := New(input)
+	for i, tt := range tests {
+		tok := l.NextToken()
+		if tok.Type != tt.expectedType {
+			t.Fatalf("tests[%d] - tokentype wrong, expected=%q, got=%q", i, tt.expectedType, tok.Type)
+		}
+		if tok.Literal != tt.expectedLiteral {
+			t.Fatalf("tests[%d] - Literal wrong, expected=%q, got=%q", i, tt.expectedLiteral, tok.Literal)
+		}
+	}
+}
+
+func TestSimpleJump(t *testing.T) {
+	input := `
+
+        jmp exit_here
+        store #1, "Can't Happen\n"
+        print_str #1
+:exit_here
+        nop
+        exit
+
+`
+
+	tests := []struct {
+		expectedType    token.Type
+		expectedLiteral string
+	}{
+		{token.JMP, "jmp"},
+		{token.IDENT, "exit_here"},
+
+		{token.STORE, "store"},
+		{token.IDENT, "#1"},
+		{token.COMMA, ","},
+		{token.STRING, "Can't Happen\n"},
+
+		{token.PRINT_STR, "print_str"},
+		{token.IDENT, "#1"},
+
+		{token.LABEL, ":exit_here"},
+		{token.NOP, "nop"},
+		{token.EXIT, "exit"},
 		{token.EOF, ""},
 	}
 	l := New(input)
