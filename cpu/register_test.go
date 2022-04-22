@@ -53,6 +53,12 @@ func TestRegisterString(t *testing.T) {
 	if val != "Hello, world!" {
 		t.Errorf("register contains the wrong value!")
 	}
+
+	// Calling "GetInt" will fail.
+	_, err = r.GetInt()
+	if err == nil {
+		t.Errorf("expected error, received none")
+	}
 }
 
 // Test overflow
@@ -89,6 +95,12 @@ func TestIntBounds(t *testing.T) {
 
 		if val != test.get {
 			t.Errorf("register contains the wrong value: 0x%04X != 0x%04X", val, test.get)
+		}
+
+		// Calling GetString will fail on an integer value
+		_, err = r.GetString()
+		if err == nil {
+			t.Errorf("expected error, got none")
 		}
 	}
 }
