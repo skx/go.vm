@@ -36,7 +36,7 @@ var reader *bufio.Reader
 // TrapNOP is the default trap-function for any trap IDs that haven't
 // explicitly been setup.
 func TrapNOP(c *CPU, num int) error {
-	return fmt.Errorf("Trap function not defined: 0x%04X\n", num)
+	return fmt.Errorf("trap function not defined: 0x%04X", num)
 }
 
 // StrLenTrap returns the length of a string.

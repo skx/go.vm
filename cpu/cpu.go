@@ -1053,7 +1053,7 @@ func (c *CPU) Run() error {
 
 			// Ensure our stack isn't empty
 			if c.stack.Empty() {
-				return fmt.Errorf("stackunderflow!")
+				return fmt.Errorf("stackunderflow")
 			}
 			// Store the value in the register on the stack
 			val, _ := c.stack.Pop()
@@ -1062,7 +1062,7 @@ func (c *CPU) Run() error {
 		case opcode.STACK_RET:
 			// Ensure our stack isn't empty
 			if c.stack.Empty() {
-				return fmt.Errorf("stackunderflow!")
+				return fmt.Errorf("stackunderflow")
 			}
 
 			// Get the address
@@ -1099,7 +1099,7 @@ func (c *CPU) Run() error {
 				}
 			}
 		default:
-			return fmt.Errorf("unrecognized/Unimplemented opcode %02X at IP %04X\n", op.Value(), c.ip)
+			return fmt.Errorf("unrecognized/Unimplemented opcode %02X at IP %04X", op.Value(), c.ip)
 		}
 
 		// Ensure our instruction-pointer wraps around.

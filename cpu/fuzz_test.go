@@ -29,7 +29,7 @@ func FuzzCPU(f *testing.F) {
 		"strconv",
 		"timeout during execution",
 		"too large",
-		"Trap function not defined:",
+		"trap function not defined:",
 		"invalid trap ",
 		"EOF",
 		"write beyond RAM",
