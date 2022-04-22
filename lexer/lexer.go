@@ -114,7 +114,7 @@ func (l *Lexer) readNumber() string {
 // read until white space
 func (l *Lexer) readUntilWhitespace() string {
 	position := l.position
-	for !isWhitespace(l.ch) {
+	for !isWhitespace(l.ch) && l.ch != rune(0) {
 		l.readChar()
 	}
 	return string(l.characters[position:l.position])
@@ -123,11 +123,12 @@ func (l *Lexer) readUntilWhitespace() string {
 // read decimal - this needs love to handle decimal and hex.
 func (l *Lexer) readDecimal() token.Token {
 	integer := l.readNumber()
-
 	if isEmpty(l.ch) || isWhitespace(l.ch) || l.ch == rune(',') {
 		return token.Token{Type: token.INT, Literal: integer}
 	}
+
 	illegalPart := l.readUntilWhitespace()
+
 	return token.Token{Type: token.ILLEGAL, Literal: integer + illegalPart}
 }
 

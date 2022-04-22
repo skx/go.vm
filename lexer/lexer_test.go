@@ -128,7 +128,7 @@ func TestSimpleJump(t *testing.T) {
 	input := `
 
         jmp exit_here
-        store #1, "Can't Happen\n"
+        store #1, "Can't\\\t\r\" Happen\n"
         print_str #1
 :exit_here
         nop
@@ -146,7 +146,7 @@ func TestSimpleJump(t *testing.T) {
 		{token.STORE, "store"},
 		{token.IDENT, "#1"},
 		{token.COMMA, ","},
-		{token.STRING, "Can't Happen\n"},
+		{token.STRING, "Can't\\\t\r\" Happen\n"},
 
 		{token.PRINT_STR, "print_str"},
 		{token.IDENT, "#1"},
@@ -165,5 +165,37 @@ func TestSimpleJump(t *testing.T) {
 		if tok.Literal != tt.expectedLiteral {
 			t.Fatalf("tests[%d] - Literal wrong, expected=%q, got=%q", i, tt.expectedLiteral, tok.Literal)
 		}
+	}
+}
+
+func TestReadDecimal(t *testing.T) {
+	input := `
+0123+3`
+
+	tests := []struct {
+		expectedType    token.Type
+		expectedLiteral string
+	}{
+		{token.ILLEGAL, "0123+3"},
+		{token.EOF, ""},
+	}
+	l := New(input)
+	for i, tt := range tests {
+		tok := l.NextToken()
+
+		if tok.Type != tt.expectedType {
+			t.Fatalf("tests[%d] - tokentype wrong, expected=%q, got=%q", i, tt.expectedType, tok.Type)
+		}
+		if tok.Literal != tt.expectedLiteral {
+			t.Fatalf("tests[%d] - Literal wrong, expected=%q, got=%q", i, tt.expectedLiteral, tok.Literal)
+		}
+	}
+
+	i := 0
+	for i < 10 {
+		if l.peekChar() != rune(0) {
+			t.Fatalf("expected NULL at EOF")
+		}
+		i++
 	}
 }
