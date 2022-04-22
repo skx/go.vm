@@ -6,6 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+    - name: Generate the artifacts
+      uses: skx/github-action-build@master
     - name: Upload
       uses: skx/github-action-publish-binaries@master
       env:
