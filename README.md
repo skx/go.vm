@@ -39,19 +39,22 @@ If you want to see a __real__ virtual machine, interpreting a scripting language
 
 ## Installation
 
-There are two ways to install this project from source, which depend on the version of the [go](https://golang.org/) version you're using.
+Installation of this tool from source is as simple as:
 
-If you prefer you can fetch a binary from [our release page](https://github.com/skx/go.vm/releases).  Currently there is only a binary for Linux (amd64) due to the use of `cgo` in our dependencies.
+```sh
+$ git clone https://github.com/skx/go.vm
+$ cd go.vm
+$ go install .
+```
 
-## Build without Go Modules (Go before 1.11)
+If you prefer you can download the latest version directly like so:
 
-    go get -u github.com/skx/go.vm
+```sh
+$ go install github.com/skx/go.vm@latest
+```
 
-## Build with Go Modules (Go 1.11 or higher)
+If you don't have the golang compiler/tools installed you can instead fetch binaries from [our release page](https://github.com/skx/go.vm/releases).
 
-    git clone https://github.com/skx/go.vm ;# make sure to clone outside of GOPATH
-    cd go.vm
-    go install
 
 
 ## Usage
