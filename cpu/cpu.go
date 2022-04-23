@@ -239,9 +239,16 @@ func (c *CPU) Run() error {
 				return err
 			}
 			if val < 256 {
-				c.STDOUT.WriteString(fmt.Sprintf("%02X", val))
+				_, err = c.STDOUT.WriteString(fmt.Sprintf("%02X", val))
+				if err != nil {
+					return err
+				}
 			} else {
-				c.STDOUT.WriteString(fmt.Sprintf("%04X", val))
+				_, err = c.STDOUT.WriteString(fmt.Sprintf("%04X", val))
+				if err != nil {
+					return err
+				}
+
 			}
 			c.STDOUT.Flush()
 			c.ip++
@@ -630,7 +637,11 @@ func (c *CPU) Run() error {
 			if err != nil {
 				return err
 			}
-			c.STDOUT.WriteString(str)
+			_, err = c.STDOUT.WriteString(str)
+			if err != nil {
+				return err
+			}
+
 			c.STDOUT.Flush()
 			c.ip++
 

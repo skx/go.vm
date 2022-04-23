@@ -7,9 +7,7 @@
 package cpu
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"strings"
 )
 
@@ -23,11 +21,6 @@ type TrapFunction func(c *CPU, num int) error
 // TRAPS is an array of our trap-functions.
 //
 var TRAPS [0xffff]TrapFunction
-
-//
-// Helper for reading from stdin
-//
-var reader *bufio.Reader
 
 //
 // Trap Functions now follow
@@ -89,9 +82,6 @@ func RemoveNewLineTrap(c *CPU, num int) error {
 
 // init configures our registered traps.
 func init() {
-
-	// Create a reader for input-processing.
-	reader = bufio.NewReader(os.Stdin)
 
 	// Default to all traps being "empty", i.e. configured to
 	// to hold a reference to a function that just reports an
