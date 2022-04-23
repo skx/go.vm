@@ -63,7 +63,7 @@ func StrLenTrap(c *CPU, num int) error {
 //   Sets register 0 with the user-provided string
 //
 func ReadStringTrap(c *CPU, num int) error {
-	text, err := reader.ReadString('\n')
+	text, err := c.STDIN.ReadString('\n')
 	if err != nil {
 		return err
 	}

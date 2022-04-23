@@ -7,6 +7,7 @@
 package cpu
 
 import (
+	"bufio"
 	"bytes"
 	"context"
 	"fmt"
@@ -45,6 +46,12 @@ type CPU struct {
 
 	// context is used by callers to implement timeouts.
 	context context.Context
+
+	// STDIN is an input-reader used for the input-trap.
+	STDIN *bufio.Reader
+
+	// STDOUT is the writer used for outputing things.
+	STDOUT *bufio.Writer
 }
 
 //
@@ -55,6 +62,13 @@ type CPU struct {
 func NewCPU() *CPU {
 	x := &CPU{context: context.Background()}
 	x.Reset()
+
+	// allow reading from STDIN
+	x.STDIN = bufio.NewReader(os.Stdin)
+
+	// set standard output for STDOUT
+	x.STDOUT = bufio.NewWriter(os.Stdout)
+
 	return x
 }
 
@@ -225,10 +239,11 @@ func (c *CPU) Run() error {
 				return err
 			}
 			if val < 256 {
-				fmt.Printf("%02X", val)
+				c.STDOUT.WriteString(fmt.Sprintf("%02X", val))
 			} else {
-				fmt.Printf("%04X", val)
+				c.STDOUT.WriteString(fmt.Sprintf("%04X", val))
 			}
+			c.STDOUT.Flush()
 			c.ip++
 
 		case opcode.INT_TOSTRING:
@@ -615,7 +630,8 @@ func (c *CPU) Run() error {
 			if err != nil {
 				return err
 			}
-			fmt.Printf("%s", str)
+			c.STDOUT.WriteString(str)
+			c.STDOUT.Flush()
 			c.ip++
 
 		case opcode.STRING_CONCAT:
@@ -897,8 +913,7 @@ func (c *CPU) Run() error {
 				}
 				c.regs[dst].SetInt(cur)
 			} else {
-				fmt.Printf("Invalid register type?")
-				os.Exit(3)
+				return fmt.Errorf("invalid register type?")
 			}
 
 		case opcode.PEEK:
