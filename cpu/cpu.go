@@ -130,7 +130,9 @@ func (c *CPU) LoadBytes(data []byte) {
 
 	// Copy contents of file to our memory region
 	for i := 0; i < len(data); i++ {
-		c.mem[i] = data[i]
+		// Addition to fix a linter warning suggesting the used
+		// of `copy`.
+		c.mem[i+0] = data[i+0]
 	}
 }
 
