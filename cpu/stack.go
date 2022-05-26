@@ -43,7 +43,12 @@ func (s *Stack) Pop() (int, error) {
 		return 0, errors.New("Pop from an empty stack")
 	}
 
-	result := s.entries[0]
-	s.entries = append(s.entries[:0], s.entries[1:]...)
-	return result, nil
+	// get top
+	l := len(s.entries)
+	top := s.entries[l-1]
+
+	// truncate
+	s.entries = s.entries[:l-1]
+
+	return top, nil
 }
