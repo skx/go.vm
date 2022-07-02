@@ -246,6 +246,10 @@ If you're interested in compilers, and interpreters, generally you might enjoy t
 
 * https://github.com/skx/gobasic
   * A simple BASIC interpreter
+* https://github.com/skx/critical
+  * A simple TCL interpreter
+* https://github.com/skx/foth
+  * A tutorial-based implementation of a FORTH scripting language.
 * https://github.com/skx/bfcc
   * A [brainfuck](https://en.wikipedia.org/wiki/Brainfuck) compiler
 * https://github.com/skx/math-compiler
